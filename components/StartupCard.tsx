@@ -49,3 +49,4 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
 };
 
 export default StartupCard;
+
