@@ -3,6 +3,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import Navbar from "@/components/Navbar";
 import { cn } from "@/lib/utils";
+import 'easymde/dist/easymde.min.css'
 
 
 const workSans = localFont({
