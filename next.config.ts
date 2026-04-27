@@ -1,3 +1,4 @@
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -8,7 +9,7 @@ const nextConfig = {
     }]
   },
   // Use boolean, not string
-  cacheComponents: true,   // Enables Partial Prerendering (recommended)
+  cacheComponents: true,
   devIndicators: {
     appIsrStatus: true,
     buildActivity: true,
