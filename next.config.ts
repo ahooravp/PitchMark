@@ -10,6 +10,7 @@ const nextConfig = {
   },
   // Use boolean, not string
   cacheComponents: true,
+  after: true,
   devIndicators: {
     appIsrStatus: true,
     buildActivity: true,

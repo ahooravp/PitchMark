@@ -50,16 +50,16 @@ const page = async ({ params }: { params: { id: string } }) => {
               />
 
               <div>
-                <p className="text-20-medium">{post.author.name}</p>
+                <p className="text-20-medium">{post.author?.name}</p>
                 <p className="text-16-medium !text-300">
-                  @{post.author.username}
+                  @{post.author?.username}
                 </p>
               </div>
             </Link>
 
-            <p className="category-tag">{post.category}</p>
+            <p className="category-tag">{post?.category}</p>
           </div>
-          <h3 className="text-30-bold">Pitch Detais</h3>
+          <h3 className="text-30-bold">Pitch Details</h3>
           {parsedContent ? (
             <article 
               className="prose max-w-4xl font-work-sans break-all"

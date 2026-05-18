@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import Navbar from "@/components/Navbar";
 import { cn } from "@/lib/utils";
 import "easymde/dist/easymde.min.css";
+import { Toaster } from "@/components/ui/toaster";
 
 const workSans = localFont({
   src: [
@@ -71,6 +72,7 @@ export default function RootLayout({
       <body>
         <Navbar />
         {children}
+        <Toaster />
       </body>
     </html>
   );
