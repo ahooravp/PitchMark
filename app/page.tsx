@@ -4,14 +4,12 @@ import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 import { PLAYLIST_BY_SLUG_QUERY, STARTUPS_QUERY } from "@/sanity/lib/queries";
 import { client } from "@/sanity/lib/client";
-
+import EditorPicksCarousel from "@/components/EditorPicksCarousel";
 // Existing StartupList component (no changes needed)
 async function StartupList({ query }: { query?: string }) {
   const params = { search: query || null };
 
   const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY, params });
-
-
 
   return (
     <ul className="mt-5 card_grid">
@@ -50,19 +48,16 @@ async function HomeContent({
         <SearchForm query={query} />
       </section>
 
-
       <section className="section_container">
-      {editorPosts?.length > 0 && (
-        <div className="max-w-4xl max-auto">
-          <p className="text-30-semibold">Editor picks</p>
-
-          <ul className="mt-4 mb-8 card_grid-sm">
-            {editorPosts.map((post: StartupTypeCard, i:number) => (
-              <StartupCard key={i} post={post}/>
-            ))}
-          </ul>
-        </div>
-      )}
+        {editorPosts?.length > 0 && (
+          <div className="max-w-7xl mx-auto px-5">
+            {" "}
+            {/* Added px-5 so arrows don't clip off screen */}
+            <p className="text-30-semibold">Editor picks</p>
+            {/* Use your new Client Component */}
+            <EditorPicksCarousel editorPosts={editorPosts} />
+          </div>
+        )}
         <p className="text-30-semibold">
           {query ? `Search results for "${query}"` : "All Startups"}
         </p>

@@ -75,6 +75,20 @@
     @apply grid sm:grid-cols-2 gap-5;
   }
 
+  .card_grid-sm-editor {
+  /* Flex layout, no wrapping, horizontal scroll, smooth snapping */
+  @apply flex flex-nowrap overflow-x-auto gap-5 scroll-smooth snap-x snap-mandatory py-2;
+  
+  /* Hide scrollbar for Firefox and IE */
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  }
+
+  /* Hide scrollbar for Chrome, Safari, and Edge */
+  .card_grid-sm-editor::-webkit-scrollbar {
+    display: none; 
+  }
+
   .no-result {
     @apply text-black-100 text-sm font-normal;
   }
@@ -141,8 +155,7 @@
   }
 
   .startup-card_desc {
-    @apply font-normal text-[16px] line-clamp-2 my-3 text-black-100 break-all;
-  }
+  @apply font-normal text-[16px] line-clamp-2 my-3 text-black-100 break-all min-h-[48px];  }
 
   .startup-card_img {
     @apply w-full h-[164px] rounded-[10px] object-cover;

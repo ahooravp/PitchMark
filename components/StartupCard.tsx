@@ -13,7 +13,7 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
   const {_createdAt,views,author,description,image,category,title,_id} = post
 
   return (
-    <li className="startup-card group">
+    <div className="startup-card group">
       <div className="flex-between">
         <p className="startup-card-date">{formatDate(_createdAt)}</p>
         <div className="flex gap-1.5">
@@ -48,7 +48,7 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
           <Link href={`/startup/${_id}`}>Details</Link>
         </Button>
       </div>
-    </li>
+    </div>
   );
 };
 
