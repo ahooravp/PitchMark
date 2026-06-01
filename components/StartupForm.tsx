@@ -165,7 +165,7 @@ const StartupForm = () => {
             disallowedElements: ["style"],
           }}
         />
-        <p className="text-sm text-gray-500">
+        <p className=" mt-2 text-sm text-gray-500">
           {pitch.length}/500 characters (minimum 10)
         </p>
         

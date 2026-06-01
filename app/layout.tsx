@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import { cn } from "@/lib/utils";
 import "easymde/dist/easymde.min.css";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "@/components/Footer";
 
 const workSans = localFont({
   src: [
@@ -71,7 +72,10 @@ export default function RootLayout({
     <html lang="en" className={cn("font-sans", workSans.variable)}>
       <body>
         <Navbar />
+        <main className="pt-16">
         {children}
+        </main>
+        <Footer />
         <Toaster />
       </body>
     </html>

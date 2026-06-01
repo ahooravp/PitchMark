@@ -20,12 +20,12 @@ export default function EditorPicksCarousel({
   };
 
   return (
-    <div className="relative group mt-7">
+    <div className="relative group mt-4">
       {/* Left Navigation Arrow */}
       {/* Left Navigation Arrow */}
       <button
         onClick={() => scroll("left")}
-        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 hidden group-hover:flex items-center justify-center w-10 h-10 bg-white border-2 border-black rounded-full shadow-md hover:bg-primary hover:text-white transition-all"
+        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 hidden group-hover:flex items-center justify-center w-10 h-10 bg-white border-2 border-black/5 rounded-full shadow-md hover:bg-primary hover:text-white transition-all"
         aria-label="Scroll left"
       >
         {/* The Lucide Icon! */}
@@ -36,8 +36,8 @@ export default function EditorPicksCarousel({
       <ul ref={scrollRef} className="card_grid-sm-editor relative w-full">
         {editorPosts.map((post: StartupTypeCard, i: number) => (
           // Important: We add a wrapper to define the width of each card and snap alignment
-          <li key={i} className="snap-center min-w-[300px] md:min-w-[350px]">
-            <StartupCard post={post} />
+          <li key={i} className="snap-center min-w-[260px] md:min-w-[300px]">
+            <StartupCard post={post} variant="compact" />
           </li>
         ))}
       </ul>
@@ -45,7 +45,7 @@ export default function EditorPicksCarousel({
       {/* Right Navigation Arrow */}
       <button
         onClick={() => scroll("right")}
-        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 hidden group-hover:flex items-center justify-center w-10 h-10 bg-white border-2 border-black rounded-full shadow-md hover:bg-primary hover:text-white transition-all"
+        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 hidden group-hover:flex items-center justify-center w-10 h-10 bg-white border-2 border-black/5 rounded-full shadow-md hover:bg-primary hover:text-white transition-all"
         aria-label="Scroll right"
       >
         {/* The Lucide Icon! */}

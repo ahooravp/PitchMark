@@ -18,11 +18,12 @@ export const createPitch = async (
       status: "ERROR",
     });
 
-  const { title, description, category, link } = Object.fromEntries(
-    Array.from(form).filter(([key]) => key != "pitch"),
-  );
+  const title = form.get("title") as string;
+  const description = form.get("description") as string;
+  const category = form.get("category") as string;
+  const link = form.get("link") as string;
 
-  const slug = slugify(title as string, { lower: true, strict: true });
+  const slug = slugify(title, { lower: true, strict: true });
 
   try {
     const startup = {

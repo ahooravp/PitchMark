@@ -6,229 +6,262 @@
 
 @layer base {
   :root {
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+  }
+
+  body {
+    /* Using the warm ivory as the app's base background */
+    @apply bg-white-100 text-black-200 antialiased selection:bg-primary selection:text-white;
   }
 }
 
 @layer utilities {
+  /* Layout & Typography utilities */
   .flex-between {
     @apply flex justify-between items-center;
   }
 
   .text-30-extrabold {
-    @apply text-[30px] font-extrabold text-white;
+    @apply text-[30px] font-extrabold text-white tracking-tight;
   }
 
   .text-30-bold {
-    @apply text-[30px] font-bold text-black;
+    @apply text-[30px] font-bold text-black-200 tracking-tight;
+  }
+
+  .text-30-bold-white {
+    @apply text-[30px] font-bold text-white tracking-tight;
+  }
+
+  .text-36-bold {
+    @apply text-[36px] font-bold text-black-200 tracking-tight;
   }
 
   .text-30-semibold {
-    @apply font-semibold text-[30px] text-black;
+    @apply font-semibold text-[30px] text-black-200 tracking-tight;
   }
 
   .text-26-semibold {
-    @apply font-semibold text-[26px] text-black;
+    @apply font-semibold text-[26px] text-black-200;
   }
 
   .text-24-black {
-    @apply text-[24px] font-black text-black;
+    @apply text-[24px] font-black text-black-200 tracking-tight;
+  }
+
+  .text-30-black {
+    /* Increased from 24px to 32px */
+    @apply text-[30px] font-black text-black-200 tracking-tight;
   }
 
   .text-20-medium {
-    @apply font-medium text-[20px] text-black;
+    @apply font-medium text-[20px] text-black-200;
   }
 
   .text-16-medium {
-    @apply font-medium text-[16px] text-black;
+    @apply font-medium text-[16px] text-black-200;
   }
 
   .text-14-normal {
-    @apply font-normal text-sm text-white-100/80;
+    @apply font-normal text-sm text-white-100;
   }
 
-  .pink_container {
-    @apply w-full bg-primary min-h-[530px] pattern flex justify-center items-center flex-col py-10 px-6;
+
+  /* Hero Section */
+  .hero_container {
+    @apply w-full min-h-[530px] flex justify-center items-center flex-col py-12 px-6 relative overflow-hidden bg-primary;
+    /* Straight vertical stripes, brighter white (0.15), and slightly wider spacing */
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.25),
+      rgba(255, 255, 255, 0.25) 2px,
+      transparent 2px,
+      transparent 62px
+    );
   }
 
+  .heading {
+    /* Changed bg-primary-100 back to bg-black/20 for a cleaner glass effect */
+    @apply uppercase bg-black/20 px-8 py-4 font-work-sans font-extrabold text-white sm:text-[54px] sm:leading-[64px] text-[36px] leading-[46px] max-w-5xl text-center my-5 rounded-sm backdrop-blur-md border border-black/10 shadow-md shadow-black-200;
+  }
+
+  .sub-heading {
+    @apply font-medium text-[20px] text-white/90 max-w-2xl text-center break-words drop-shadow-md shadow-black-200;
+  }
+
+  /* Tags & Structural */
   .tag {
     @apply bg-secondary px-6 py-3 font-work-sans font-bold rounded-sm uppercase relative tag-tri;
   }
 
-  .heading {
-    @apply uppercase bg-black px-6 py-3 font-work-sans font-extrabold text-white sm:text-[54px] sm:leading-[64px] text-[36px] leading-[46px] max-w-5xl text-center my-5;
-  }
-
-  .sub-heading {
-    @apply font-medium text-[20px] text-white max-w-2xl text-center break-words;
+  .tag-tri {
+    @apply before:content-[''] before:absolute before:top-2 before:left-2 before:border-t-[10px] before:border-t-black before:border-r-[10px] before:border-r-transparent after:content-[''] after:absolute after:bottom-2 after:right-2 after:border-b-[10px] after:border-b-black after:border-l-[10px] after:border-l-transparent;
   }
 
   .section_container {
-    @apply px-6 py-10 max-w-7xl mx-auto;
+    @apply px-6 py-16 max-w-7xl mx-auto;
   }
 
+  /* Grids */
   .card_grid {
-    @apply grid md:grid-cols-3 sm:grid-cols-2 gap-5;
+    @apply grid md:grid-cols-3 sm:grid-cols-2 gap-8;
   }
 
   .card_grid-sm {
-    @apply grid sm:grid-cols-2 gap-5;
+    @apply grid sm:grid-cols-2 gap-8;
   }
 
   .card_grid-sm-editor {
-  /* Flex layout, no wrapping, horizontal scroll, smooth snapping */
-  @apply flex flex-nowrap overflow-x-auto gap-5 scroll-smooth snap-x snap-mandatory py-2;
-  
-  /* Hide scrollbar for Firefox and IE */
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
+    /* Swapped py-6 for pt-2 pb-6 to kill the top gap but keep the bottom spacing */
+    @apply flex flex-nowrap overflow-x-auto gap-8 scroll-smooth snap-x snap-mandatory pb-6 pt-2 px-2;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
-  /* Hide scrollbar for Chrome, Safari, and Edge */
   .card_grid-sm-editor::-webkit-scrollbar {
-    display: none; 
+    display: none;
   }
 
   .no-result {
-    @apply text-black-100 text-sm font-normal;
+    @apply text-black-300 text-base font-medium italic;
   }
 
-  /* profile */
+  /* Profile Section */
   .profile_container {
-    @apply w-full pb-10 pt-20 px-6 max-w-7xl mx-auto lg:flex-row flex-col flex gap-10;
+    @apply w-full pb-12 pt-24 px-6 max-w-7xl mx-auto lg:flex-row flex-col flex gap-12;
   }
 
   .profile_card {
-    @apply w-80 px-6 pb-6 pt-20 flex flex-col justify-center items-center bg-primary border-[5px] border-black shadow-100 rounded-[30px] relative z-0 h-fit max-lg:w-full;
+    /* Added the 2px structural border here too */
+    @apply w-80 px-6 pb-8 pt-20 flex flex-col justify-center items-center bg-primary border-2 border-black-200 shadow-black-200 shadow-200 rounded-3xl relative z-0 h-fit max-lg:w-full transition-all ;
   }
 
   .profile_title {
-    @apply w-11/12 bg-white border-[5px] border-black rounded-[20px] px-5 py-3 absolute -top-9 after:absolute after:content-[''] after:-top-1 after:right-0 after:-skew-y-6 after:bg-black after:-z-[1] after:rounded-[20px] after:w-full after:h-[60px] before:absolute before:content-[''] before:-bottom-1 before:left-0  before:-skew-y-6 before:w-full before:h-[60px] before:bg-black  before:-z-[1] before:rounded-[20px] shadow-100;
+    @apply w-10/12 bg-white text-black rounded-xl px-5 py-3 absolute -top-6   text-center font-bold border-2 border-black text-lg tracking-wide;
   }
 
   .profile_image {
-    @apply rounded-full object-cover border-[3px] border-black;
+    @apply rounded-full object-cover border-[2px] border-black-200 ;
   }
 
-  /* idea details */
+  /* Idea Details */
   .divider {
-    @apply border-dotted bg-zinc-400 max-w-4xl my-10 mx-auto;
+    @apply border-t border-black-100/10 max-w-4xl my-10 mx-auto;
   }
 
   .view_skeleton {
     @apply bg-zinc-400 h-10 w-24 rounded-lg fixed bottom-3 right-3;
   }
 
-  /* navbar */
+  /* Navbar */
   .avatar {
-    @apply p-0 focus-visible:ring-0 bg-none rounded-full drop-shadow-md !important;
+    @apply p-0 focus-visible:ring-0 bg-none rounded-full drop-shadow-sm shadow-black-200 border-2 border-transparent hover:border-primary transition-all !important;
   }
 
   .dropdown-menu {
-    @apply w-56 border-[5px] border-black bg-white p-5 rounded-2xl !important;
+    @apply w-56 border border-black/5 bg-white p-4 rounded-2xl shadow-200   shadow-black-200  !important;
   }
 
   .login {
-    @apply border-[5px] py-4 border-black bg-white text-black relative shadow-100 font-work-sans font-medium hover:shadow-none transition-all duration-500 !important;
+    @apply py-3 px-8 rounded-full bg-black text-white relative shadow-100 font-work-sans font-medium hover:bg-primary hover:shadow-200 shadow-black-200 transition-all duration-300 !important;
   }
 
-  /* searchform */
+  /* Search Form */
   .search-form {
-    @apply max-w-3xl w-full min-h-[80px] bg-white border-[5px] border-black rounded-[80px] text-[24px] mt-8 px-5 flex flex-row items-center gap-5;
+    /* Giving the search form a skeleton that matches the cards */
+    @apply max-w-3xl w-full min-h-[72px] bg-white border-2 border-black/5 shadow-200 rounded-full text-[20px] mt-8 px-4 flex flex-row items-center gap-4 transition-all duration-300 focus-within:shadow-300  shadow-black-200 focus-within:border-primary focus-within:-translate-y-1;
   }
 
   .search-input {
-    @apply flex-1 font-bold placeholder:font-semibold placeholder:text-black-100 w-full h-auto outline-none;
+    @apply flex-1 font-medium placeholder:font-normal placeholder:text-black-300 w-full h-full outline-none px-4 bg-transparent text-black;
   }
 
   .search-btn {
-    @apply size-[50px] rounded-full bg-black flex justify-center items-center !important;
+    @apply size-[56px] rounded-full bg-primary text-white flex justify-center items-center hover:bg-primary-100 transition-colors duration-300 shadow-100 shadow-black-200 !important;
   }
 
-  /* startupcard */
+  /* Startup Card */
   .startup-card {
-    @apply bg-white border-[5px] border-black py-6 px-5 rounded-[22px] shadow-200 hover:border-primary transition-all duration-500 hover:shadow-300 hover:bg-primary-100;
+    /* Re-added the "bones" with a 2px border, and a crisp primary border on hover */
+    @apply bg-white py-8 px-6 rounded-3xl shadow-100 shadow-black-200 border-black-200 border-2 hover:border-primary hover:shadow-300  hover:shadow-primary hover:-translate-y-2 transition-all duration-300 flex flex-col gap-4;
   }
 
   .startup-card_date {
-    @apply font-medium text-[16px] bg-primary-100 px-4 py-2 rounded-full group-hover:bg-white-100;
+    /* Swapped solid bg for a light tint, changed text to primary, reduced padding */
+    @apply font-bold text-[12px] text-primary bg-primary/10 px-3 py-1 rounded-md w-fit uppercase tracking-widest;
   }
 
   .startup-card_desc {
-  @apply font-normal text-[16px] line-clamp-2 my-3 text-black-100 break-all min-h-[48px];  }
+    @apply font-normal text-[15px] leading-relaxed line-clamp-2 text-black-300 break-words min-h-[44px];
+  }
 
   .startup-card_img {
-    @apply w-full h-[164px] rounded-[10px] object-cover;
+    @apply w-full h-[180px] rounded-2xl object-cover shadow-sm ;
   }
 
   .startup-card_btn {
-    @apply rounded-full bg-black-200 font-medium text-[16px] text-white px-5 py-3 !important;
+    @apply rounded-full bg-black-100 font-medium text-[15px] text-white px-6 py-3 hover:bg-primary transition-colors duration-300 !important;
   }
 
   .startup-card_skeleton {
-    @apply w-full h-96 rounded-[22px] bg-zinc-400;
+    @apply w-full h-96 rounded-3xl bg-black/5 animate-pulse;
   }
 
-  /* startupform */
+  /* Startup Form */
   .startup-form {
-    @apply max-w-2xl mx-auto bg-white my-10 space-y-8 px-6;
+    @apply max-w-2xl mx-auto bg-white p-12 rounded-[2rem] shadow-200 shadow-black-200 border-2 border-black/5 my-16 space-y-8;
   }
 
   .startup-form_label {
-    @apply font-bold text-[18px] text-black uppercase;
+    @apply font-bold text-[14px] text-black-300 uppercase tracking-widest;
   }
 
-  .startup-form_input {
-    @apply border-[3px] border-black px-5 py-7 text-[18px] text-black font-semibold rounded-full mt-3 placeholder:text-black-300 !important;
+  .startup-form_input,
+  .startup-form_editor {
+    /* Changed focus:ring-primary-100 to focus:ring-primary for a brighter glow */
+    @apply border-b-2 border-black/10 px-2 py-4 text-[18px] text-black font-medium rounded-md mt-2 placeholder:text-black-300 focus:border-primary focus:ring-1 focus:ring-primary focus:ring-offset-0 transition-all outline-none bg-transparent hover:border-black/20 !important;
   }
 
   .startup-form_textarea {
-    @apply border-[3px] border-black p-5 text-[18px] text-black font-semibold rounded-[20px] mt-3 placeholder:text-black-300 !important;
+    /* Changed focus:ring-primary-100 to focus:ring-primary */
+    @apply border-2 border-black/5 p-6 text-[16px] text-black font-medium rounded-s-md mt-4 placeholder:text-black-300 focus:border-primary focus:ring-1 focus:ring-primary focus:ring-offset-0 transition-all outline-none hover:border-black/20 bg-white resize-y min-h-[160px] !important;
   }
 
   .startup-form_error {
-    @apply text-red-500 mt-2 ml-5;
-  }
-
-  .startup-form_editor {
-    @apply mt-3 border-[3px] border-black text-[18px] text-black font-semibold placeholder:text-black-300 !important;
+    @apply text-primary mt-2 ml-2 text-sm font-medium;
   }
 
   .startup-form_btn {
-    @apply bg-primary border-[4px] border-black rounded-full p-5 min-h-[70px] w-full font-bold text-[18px] !important;
+    @apply bg-primary text-white rounded-full p-4 min-h-[64px] w-full font-bold text-[18px] shadow-100 shadow-black-200 hover:bg-primary-100 hover:shadow-200 transition-all duration-300 mt-8 !important;
   }
 
   /* view */
   .view-container {
-    @apply flex justify-end items-center mt-5 fixed bottom-3 right-3;
+    @apply text-white flex justify-end items-center mt-5 fixed bottom-3 right-3;
   }
 
-  .view-text {
-    @apply font-medium text-[16px] bg-primary-100 px-4 py-2 rounded-lg capitalize;
+.view-text {
+    /* Uses a soft black glass effect to hover gracefully over any background */
+    @apply font-medium text-[14px] bg-primary-200 text-black-100 border-2 border-primary-200  px-4 py-2 rounded-md shadow-sm shadow-black-200 capitalize;
   }
 
   .category-tag {
-    @apply font-medium text-[16px] bg-primary-100 px-4 py-2 rounded-full;
-  }
-
-  .pattern {
-    background-image: linear-gradient(
-            to right,
-            transparent 49.5%,
-            rgba(251, 232, 67, 0.2) 49.5%,
-            rgba(251, 232, 67, 0.6) 50.5%,
-            transparent 50.5%
-    );
-    background-size: 6% 100%;
-    background-position: center;
-    background-repeat: repeat-x;
-  }
-
-  .tag-tri {
-    @apply before:content-[''] before:absolute before:top-2 before:left-2 before:border-t-[10px] before:border-t-black before:border-r-[10px] before:border-r-transparent after:content-[''] after:absolute after:bottom-2 after:right-2 after:border-b-[10px] after:border-b-black after:border-l-[10px] after:border-l-transparent;
+    /* Updated to the "Glass Pill" design: Cherry red text, semi-transparent background, and a delicate border */
+    @apply px-3 py-2 bg-primary/10 border border-primary/20 text-primary rounded-full text-xs font-bold tracking-wider uppercase  shadow-black-200;
   }
 }
 
+/* Editor Overrides for Light Mode - Syncing the Pitch Field */
+.w-md-editor {
+  /* Matches the textarea: 2px border, slight curve, white background */
+  @apply !border-2 !border-black/5 !rounded-md !mt-4 !transition-all !bg-white hover:!border-black/20 !shadow-none;
+}
+
+.w-md-editor:focus-within {
+  /* Changed !ring-primary-100 to !ring-primary */
+  @apply !border-primary !ring-1 !ring-primary;
+}
+/* Clean up the toolbar to match the crisp light theme */
 .w-md-editor-toolbar {
-  padding: 10px !important;
+  @apply !bg-white !border-b-2 !border-black/5 !p-3;
 }
