@@ -8,6 +8,8 @@ import React, { Suspense } from "react";
 import markdownit from "markdown-it";
 import { Skeleton } from "@/components/ui/skeleton";
 import View from "@/components/View";
+import RecentStartups from "@/components/RecentStartups";
+import ViewTracker from "@/components/ViewTracker";
 
 const md = markdownit();
 
@@ -35,12 +37,10 @@ const page = async ({ params }: { params: { id: string } }) => {
           <img
             src={post.image}
             alt="thumbnail"
-            className="w-full max-w-4xl mx-auto h-auto min-h-[250px] max-h-[450px] rounded-xl object-cover shadow-sm"
+            className="w-full max-w-5xl mx-auto h-auto min-h-[300px] max-h-[500px] rounded-xl object-cover shadow-sm"
           />
 
-          <div className="max-w-4xl mx-auto mt-12">
-            {/* --- UPDATED META BAR --- */}
-            {/* --- UPDATED META BAR WITH FADING GRADIENT --- */}
+          <div className="max-w-5xl mx-auto mt-12">
             <div className="flex-between gap-5 py-4 pl-4 pr-6 rounded-l-full bg-gradient-to-r from-primary/5 to-transparent mt-8">
               <Link
                 href={`/user/${post.author?._id}`}
@@ -65,8 +65,6 @@ const page = async ({ params }: { params: { id: string } }) => {
 
               <p className="category-tag">{post?.category}</p>
             </div>
-            {/* ------------------------ */}
-            {/* ------------------------ */}
 
             <hr className="divider" />
 
@@ -77,7 +75,7 @@ const page = async ({ params }: { params: { id: string } }) => {
 
               {parsedContent ? (
                 <article
-                  className="prose max-w-4xl font-work-sans break-all prose-headings:text-black-200 prose-p:text-black-300 prose-a:text-primary prose-a:font-semibold prose-a:no-underline hover:prose-a:underline mt-4 bg-gradient-to-br from-primary/5 to-transparent px-10 py-10 rounded-2xl"
+                  className="prose max-w-6xl font-work-sans break-all prose-headings:text-black-200 prose-p:text-black-300 prose-a:text-primary prose-a:font-semibold prose-a:no-underline hover:prose-a:underline mt-4 bg-gradient-to-br from-primary/5 to-transparent px-10 py-10 rounded-2xl"
                   dangerouslySetInnerHTML={{ __html: parsedContent }}
                 />
               ) : (
@@ -86,11 +84,13 @@ const page = async ({ params }: { params: { id: string } }) => {
             </div>
           </div>
 
-          <hr className="divider" />
+          <ViewTracker id={id} />
 
           <Suspense fallback={<Skeleton className="view_skeleton" />}>
             <View id={id} />
           </Suspense>
+
+          <RecentStartups currentId={id} />
         </section>
       </div>
     </>

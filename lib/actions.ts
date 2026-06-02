@@ -4,6 +4,15 @@ import { auth } from "@/auth";
 import { parseServerActionResponse } from "./utils";
 import slugify from "slugify";
 import { writeClient } from "@/sanity/lib/write-client";
+import { STARTUPS_BY_IDS_QUERY } from "@/sanity/lib/queries";
+import { client } from "@/sanity/lib/client";
+
+
+// This runs securely on the server, fetching the full objects for our cards
+export async function getRecentStartupsData(ids: string[]) {
+  const data = await client.fetch(STARTUPS_BY_IDS_QUERY, { ids });
+  return data;
+}
 
 export const createPitch = async (
   state: any,

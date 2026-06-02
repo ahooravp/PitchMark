@@ -93,3 +93,18 @@ export const PLAYLIST_BY_SLUG_QUERY =
       pitch
       }
   }`);
+
+export const STARTUPS_BY_IDS_QUERY = `*[_type == "startup" && _id in $ids] {
+  _id, 
+  title, 
+  slug,
+  _createdAt,
+  author -> {
+    _id, name, image, bio, username
+  },
+  views,
+  description,
+  category,
+  image,
+  pitch
+}`;
