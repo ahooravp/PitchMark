@@ -8,9 +8,9 @@ export default function Loading() {
       {/* 1. Hero Section Skeleton */}
       <section className="hero_container !min-h-[230px]">
         {/* Using a subtle white/20 pulse to match the dark red background */}
-        <Skeleton className="w-32 h-12 rounded-md bg-white/20 mb-4" />
+        <Skeleton className="w-40 h-14 rounded-md bg-white/20 mb-4" />
         <Skeleton className="w-3/4 max-w-3xl h-28 bg-white/20 rounded-xl mb-5" />
-        <Skeleton className="w-1/2 max-w-2xl h-6 bg-white/20 rounded-md" />
+        <Skeleton className="w-1/2 max-w-2xl h-12 bg-white/20 rounded-md" />
       </section>
 
       {/* 2. Main Content Area */}

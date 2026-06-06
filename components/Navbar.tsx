@@ -71,13 +71,19 @@ const Navbar = () => {
   return (
     <header className=" fixed w-full z-20 px-5 py-3 bg-white font-work-sans shadow-sm">
       <nav className="flex justify-between items-center">
-        <Link href="/" className="text-3xl font-bold tracking-tight flex ">
+        <Link
+          href="/"
+          className="text-3xl font-bold tracking-tight flex items-center gap-1 group"
+        >
           <img
             src="PM logo.png"
             alt=""
-            className="h-8 w-auto hover:scale-110 transition-transform duration-300"
+            className="h-6 w-auto  transition-transform duration-300 flex align-bottom"
           />{" "}
-          <p className="ml-1 hover:scale-105 transition-transform duration-300"><span className="text-primary">Pitch</span><span>Mark</span></p>
+          <p className="scale-105 group-hover:translate-x-1 transition-transform duration-300">
+            <span className="text-primary">Pitch</span>
+            <span>Mark</span>
+          </p>
         </Link>
         <div className="flex items-center gap-5 text-black">
           <Suspense fallback={<span>Loading...</span>}>

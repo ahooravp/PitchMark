@@ -5,18 +5,18 @@ export default function Footer() {
     <footer className="bg-primary pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-6">
         {/* Top Grid: Asymmetrical Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 mb-14">
           {/* Left Column: Brand & Logo (Takes up 5/12 columns) */}
           <div className="lg:col-span-5">
-            <Link href="/" className="flex items-center gap-1 mb-6 group">
+            <Link href="/" className="flex items-center gap-1 mb-3 group">
               {/* Visual Logo Placeholder - Swapped fixed width for dynamic padding and synced font */}
-              <div className="px-3 h-10 bg-white rounded-xl flex items-center justify-center shadow-md  transition-transform">
+              <div className="px-3 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm  transition-transform">
                 <span className="text-primary font-black text-[22px] tracking-tighter">
                   Pitch
                 </span>
               </div>
               {/* Text Logo */}
-              <h3 className="text-30-black text-white tracking-tight group-hover:text-white/80 transition-colors">
+              <h3 className="text-30-white tracking-tight transition-colors">
                 Mark
               </h3>
             </Link>

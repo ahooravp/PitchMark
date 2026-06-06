@@ -53,6 +53,10 @@
     /* Increased from 24px to 32px */
     @apply text-[30px] font-black text-black-200 tracking-tight;
   }
+  .text-30-white {
+    /* Increased from 24px to 32px */
+    @apply text-[30px] font-black text-white/80 tracking-tight;
+  }
 
   .text-20-medium {
     @apply font-medium text-[20px] text-black-200;
@@ -196,7 +200,7 @@
   }
 
   .startup-card_img {
-    @apply w-full h-[180px] rounded-2xl object-cover shadow-sm ;
+    @apply w-full h-[200px] rounded-2xl object-cover shadow-sm mt-2  ;
   }
 
   .startup-card_btn {
@@ -209,7 +213,7 @@
 
   /* Startup Form */
   .startup-form {
-    @apply max-w-2xl mx-auto bg-white p-12 rounded-[2rem] shadow-200 shadow-black-200 border-2 border-black/5 my-16 space-y-8;
+    @apply max-w-2xl mx-auto bg-white p-12 rounded-[2rem] shadow-100 shadow-black-200 border-2 border-black/5 my-16 space-y-8;
   }
 
   .startup-form_label {
@@ -232,7 +236,7 @@
   }
 
   .startup-form_btn {
-    @apply bg-primary text-white rounded-full p-4 min-h-[64px] w-full font-bold text-[18px] shadow-100 shadow-black-200 hover:bg-primary-100 hover:shadow-200 transition-all duration-300 mt-8 !important;
+    @apply bg-primary text-white rounded-full p-4 min-h-[64px] w-full font-bold text-[18px] shadow-100 shadow-black-200 hover:bg-opacity-70 hover:cursor-pointer transition-all duration-300 mt-8 !important;
   }
 
   /* view */

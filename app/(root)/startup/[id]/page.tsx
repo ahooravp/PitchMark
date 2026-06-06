@@ -4,7 +4,7 @@ import { STARTUP_BY_ID_QUERY } from "@/sanity/lib/queries";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
-
+import Image from "next/image";
 import markdownit from "markdown-it";
 import { Skeleton } from "@/components/ui/skeleton";
 import View from "@/components/View";
@@ -34,10 +34,13 @@ const page = async ({ params }: { params: { id: string } }) => {
 
       <div className="w-full bg-white-100 min-h-screen">
         <section className="section_container">
-          <img
+          <Image
             src={post.image}
             alt="thumbnail"
-            className="w-full max-w-5xl mx-auto h-auto min-h-[300px] max-h-[500px] rounded-xl object-cover shadow-sm"
+            width={1200}
+            height={800} // This establishes a 3:2 intrinsic ratio for Next.js to calculate
+            className="w-full max-w-5xl mx-auto h-auto min-h-[300px] max-h-[550px] rounded-xl object-cover shadow-sm"
+            priority // Tells Next.js to load this immediately to prevent a layout shift
           />
 
           <div className="max-w-5xl mx-auto mt-12">
