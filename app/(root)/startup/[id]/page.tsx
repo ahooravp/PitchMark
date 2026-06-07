@@ -4,12 +4,12 @@ import { STARTUP_BY_ID_QUERY } from "@/sanity/lib/queries";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
-import Image from "next/image";
 import markdownit from "markdown-it";
 import { Skeleton } from "@/components/ui/skeleton";
 import View from "@/components/View";
 import RecentStartups from "@/components/RecentStartups";
 import ViewTracker from "@/components/ViewTracker";
+import { urlFor } from "@/sanity/lib/image"; // 1. Imported the image builder
 
 const md = markdownit();
 
@@ -24,6 +24,11 @@ const page = async ({ params }: { params: { id: string } }) => {
 
   const parsedContent = md.render(post?.pitch || "");
 
+  // 2. Safely extract the URL from the image object or provide a fallback
+  const imageUrl = post.image 
+    ? urlFor(post.image).width(1200).height(800).format("webp").url() 
+    : "https://placehold.co/1200x800/EEE/31343C?font=montserrat&text=No+Image";
+
   return (
     <>
       <section className="hero_container !min-h-[230px]">
@@ -34,13 +39,12 @@ const page = async ({ params }: { params: { id: string } }) => {
 
       <div className="w-full bg-white-100 min-h-screen">
         <section className="section_container">
-          <Image
-            src={post.image}
+          
+          {/* 3. Replaced <Image> with the standard <img> tag powered by Sanity */}
+          <img
+            src={imageUrl}
             alt="thumbnail"
-            width={1200}
-            height={800} // This establishes a 3:2 intrinsic ratio for Next.js to calculate
             className="w-full max-w-5xl mx-auto h-auto min-h-[300px] max-h-[550px] rounded-xl object-cover shadow-sm"
-            priority // Tells Next.js to load this immediately to prevent a layout shift
           />
 
           <div className="max-w-5xl mx-auto mt-12">
@@ -50,9 +54,8 @@ const page = async ({ params }: { params: { id: string } }) => {
                 className="flex gap-3 items-center group"
               >
                 <img
-                  src={post.author?.image}
+                  src={post.author?.image || "https://placehold.co/64x64/EEE/31343C?font=montserrat&text=User"}
                   alt="avatar"
-                  /* Kept your existing avatar classes perfectly intact */
                   className="w-16 h-16 rounded-full drop-shadow-sm  transition-all duration-300 shadow-md group-hover:ring-2 ring-primary"
                 />
 

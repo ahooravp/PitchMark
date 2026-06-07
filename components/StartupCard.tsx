@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { Author, Startup } from "@/sanity.types";
 import { Skeleton } from "./ui/skeleton";
+import { urlFor } from "@/sanity/lib/image";
 
 export type StartupTypeCard = Omit<Startup, "author"> & {author?: Author}
 
@@ -18,8 +19,12 @@ const StartupCard = ({
 }) => {
   const {_createdAt, views, author, description, image, category, title, _id} = post
 
+  // Safely request a compressed WebP from Sanity, or use a placeholder
+  const imageUrl = image 
+    ? urlFor(image).width(800).height(500).format('webp').url() 
+    : "https://placehold.co/800x500/EEE/31343C?font=montserrat&text=No+Image";
+
   return (
-    // Relaxed the compact padding slightly so the description fits nicely
     <div className={cn("startup-card group", variant === "compact" && "!py-5 !px-5 !gap-4")}>
       <div className="flex-between">
         <p className="startup-card_date">{formatDate(_createdAt)}</p>
@@ -39,21 +44,26 @@ const StartupCard = ({
           </Link>
         </div>
         <Link href={`/user/${author?._id}`}>
-          <Image src={author?.image!} alt={author?.name!} width={48} height={48} className="rounded-full" />
+          {/* Added a fallback here to prevent Next.js <Image> errors if the author lacks an avatar */}
+          <Image 
+            src={author?.image || "https://placehold.co/48x48/EEE/31343C?font=montserrat&text=User"} 
+            alt={author?.name || "Author Avatar"} 
+            width={48} 
+            height={48} 
+            className="rounded-full" 
+          />
         </Link>
       </div>
       
       <Link href={`/startup/${_id}`}>
-        {/* The description is now visible on BOTH variants */}
-        {/* I added a conditional line-clamp-2 just in case the description is very long */}
         <p className={cn("startup-card_desc", variant === "compact" && "line-clamp-2")}>
           {description}
         </p>
 
-        {/* Increased the compact image height from 90px to 140px */}
+        {/* Utilizing the reliable <img> tag powered by Sanity's CDN */}
         <img 
-          src={image} 
-          alt="placeholder" 
+          src={imageUrl} 
+          alt={title || "Startup Image"} 
           className={cn("startup-card_img", variant === "compact" && "!h-[100px] mt-3")}
         />
       </Link>
