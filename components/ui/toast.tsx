@@ -3,8 +3,7 @@
 import * as React from "react"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"
-import { X } from "lucide-react"
-
+import { X, CheckCircle, AlertCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const ToastProvider = ToastPrimitives.Provider
@@ -29,9 +28,11 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: "border bg-white text-slate-950 dark:bg-slate-950 dark:text-slate-50 ",
-        destructive:
-          "destructive group border-destructive bg-destructive text-destructive-foreground",
+        // Both variants now have the EXACT same base styling (white background, standard border)
+        default: "border bg-white text-slate-950",
+        
+        // We removed the red background, but kept the word 'destructive' as a hidden hook
+        destructive: "destructive border bg-white text-slate-950",
       },
     },
     defaultVariants: {
@@ -91,12 +92,27 @@ ToastClose.displayName = ToastPrimitives.Close.displayName
 const ToastTitle = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Title>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title>
->(({ className, ...props }, ref) => (
+>(({ className, children, ...props }, ref) => (
   <ToastPrimitives.Title
     ref={ref}
-    className={cn("text-sm font-semibold", className)}
+    className={cn(
+      // Added flexbox layout to align the icon and text nicely
+      "text-sm font-semibold flex items-center gap-2", 
+      "group-[.destructive]:text-red-500", 
+      "group-[&:not(.destructive)]:text-emerald-500", 
+      className
+    )}
     {...props}
-  />
+  >
+    {/* This icon ONLY shows up on normal/success toasts */}
+    <CheckCircle className="h-4 w-4 hidden group-[&:not(.destructive)]:block" />
+    
+    {/* This icon ONLY shows up on error/destructive toasts */}
+    <AlertCircle className="h-4 w-4 hidden group-[.destructive]:block" />
+    
+    {/* The actual text of your title */}
+    <span>{children}</span>
+  </ToastPrimitives.Title>
 ))
 ToastTitle.displayName = ToastPrimitives.Title.displayName
 
