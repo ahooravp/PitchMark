@@ -76,7 +76,7 @@ const Navbar = () => {
           className="text-3xl font-bold tracking-tight flex items-center gap-1 group"
         >
           <img
-            src="PM logo.png"
+            src="/pm-logo.png"
             alt=""
             className="h-6 w-auto  transition-transform duration-300 flex align-bottom"
           />{" "}

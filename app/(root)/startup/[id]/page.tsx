@@ -9,7 +9,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import View from "@/components/View";
 import RecentStartups from "@/components/RecentStartups";
 import ViewTracker from "@/components/ViewTracker";
-import { urlFor } from "@/sanity/lib/image"; // 1. Imported the image builder
+import { urlFor } from "@/sanity/lib/image";
+import { auth } from "@/auth"; // <-- 1. Auth is properly imported
+import { Button } from "@/components/ui/button"; // <-- 2. Button is imported
 
 const md = markdownit();
 
@@ -18,15 +20,17 @@ export const cachecomponent = true;
 const page = async ({ params }: { params: { id: string } }) => {
   const id = (await params).id;
 
+  // 3. We fetch the session here so TypeScript knows who is logged in!
+  const session = await auth();
+
   const post = await client.fetch(STARTUP_BY_ID_QUERY, { id });
 
   if (!post) return notFound();
 
   const parsedContent = md.render(post?.pitch || "");
 
-  // 2. Safely extract the URL from the image object or provide a fallback
-  const imageUrl = post.image 
-    ? urlFor(post.image).width(1200).height(800).format("webp").url() 
+  const imageUrl = post.image
+    ? urlFor(post.image).width(1200).height(800).format("webp").url()
     : "https://placehold.co/1200x800/EEE/31343C?font=montserrat&text=No+Image";
 
   return (
@@ -39,8 +43,6 @@ const page = async ({ params }: { params: { id: string } }) => {
 
       <div className="w-full bg-white-100 min-h-screen">
         <section className="section_container">
-          
-          {/* 3. Replaced <Image> with the standard <img> tag powered by Sanity */}
           <img
             src={imageUrl}
             alt="thumbnail"
@@ -54,7 +56,10 @@ const page = async ({ params }: { params: { id: string } }) => {
                 className="flex gap-3 items-center group"
               >
                 <img
-                  src={post.author?.image || "https://placehold.co/64x64/EEE/31343C?font=montserrat&text=User"}
+                  src={
+                    post.author?.image ||
+                    "https://placehold.co/64x64/EEE/31343C?font=montserrat&text=User"
+                  }
                   alt="avatar"
                   className="w-16 h-16 rounded-full drop-shadow-sm  transition-all duration-300 shadow-md group-hover:ring-2 ring-primary"
                 />
@@ -75,9 +80,10 @@ const page = async ({ params }: { params: { id: string } }) => {
             <hr className="divider" />
 
             <div className="mt-10">
-              <h3 className="text-36-bold mb-6 text-black-200">
-                Pitch Details:
-              </h3>
+              {/* 4. THE EDIT BUTTON SECTION */}
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-36-bold text-black-200">Pitch Details:</h3>
+              </div>
 
               {parsedContent ? (
                 <article
@@ -88,6 +94,16 @@ const page = async ({ params }: { params: { id: string } }) => {
                 <p className="no-result">No details provided.</p>
               )}
             </div>
+
+            {/* This button ONLY appears if the logged-in user is the author of the post */}
+            {session?.id === post.author._id && (
+              <Button
+                asChild
+                className="bg-transparent text-primary hover:text-primary-100 rounded-full mt-4"
+              >
+                <Link href={`/startup/${id}/edit`}>Edit Startup</Link>
+              </Button>
+            )}
           </div>
 
           <ViewTracker id={id} />

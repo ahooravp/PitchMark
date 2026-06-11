@@ -29,8 +29,8 @@
     @apply text-[30px] font-bold text-black-200 tracking-tight;
   }
 
-  .text-30-bold-white {
-    @apply text-[30px] font-bold text-white tracking-tight;
+  .text-26-bold-white {
+    @apply text-[26px] font-bold text-white tracking-tight;
   }
 
   .text-36-bold {
@@ -137,7 +137,7 @@
 
   .profile_card {
     /* Added the 2px structural border here too */
-    @apply w-80 px-6 pb-8 pt-20 flex flex-col justify-center items-center bg-primary border-2 border-black-200 shadow-black-200 shadow-200 rounded-3xl relative z-0 h-fit max-lg:w-full transition-all ;
+    @apply w-80 px-6 pb-8 pt-20 flex flex-col justify-center items-center bg-primary border-2 border-black-200 shadow-black-200 shadow-100 rounded-3xl relative z-0 h-fit max-lg:w-full transition-all ;
   }
 
   .profile_title {
@@ -204,7 +204,7 @@
   }
 
   .startup-card_btn {
-    @apply rounded-full bg-black-100 font-medium text-[15px] text-white px-6 py-3 hover:bg-primary transition-colors duration-300 !important;
+    @apply rounded-full bg-black-100 font-medium text-[15px] text-white px-6 py-3 hover:bg-primary transition-colors duration-300 ;
   }
 
   .startup-card_skeleton {
