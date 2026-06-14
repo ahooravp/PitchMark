@@ -7,11 +7,9 @@ import MDeditor from "@uiw/react-md-editor";
 import { Send, ImagePlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { createPitch, editPitch } from "@/lib/actions"; // Import both actions
-import { z } from "zod";
-import { formSchema } from "@/lib/validation";
+import { createPitch, editPitch } from "@/lib/actions";
+import { startupSchema } from "@/lib/validation"; // Import the strict modular schema
 
-// Optional initialData prop for when we are editing
 const StartupForm = ({ initialData }: { initialData?: any }) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [pitch, setPitch] = useState(initialData?.pitch || ""); 
@@ -21,26 +19,35 @@ const StartupForm = ({ initialData }: { initialData?: any }) => {
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     const file = formData.get("file") as File;
-    
-    // Conditional validation: If editing and no new file is added, bypass the strict file check
     const isEditMode = !!initialData;
     const hasNewFile = file && file.size > 0;
 
+    // 1. Extract raw data into a clean object
+    const rawData = {
+      title: formData.get("title"),
+      description: formData.get("description"),
+      category: formData.get("category"),
+      pitch,
+      file,
+    };
+
+    // 2. Bulletproof Conditional Validation
+    // If editing and no new file was uploaded, we use .omit() to strip the strict file requirement
+    // Otherwise, we enforce the full strict schema.
+    const validationResult = (isEditMode && !hasNewFile)
+      ? startupSchema.omit({ file: true }).safeParse(rawData)
+      : startupSchema.safeParse(rawData);
+
+    // 3. Handle failures linearly without throwing exceptions
+    if (!validationResult.success) {
+      const fieldErrors = validationResult.error.flatten().fieldErrors;
+      setErrors(fieldErrors as unknown as Record<string, string>);
+      toast({ title: "Validation Error", description: "Please check your inputs and try again.", variant: "destructive" });
+      return { ...prevState, error: "Validation failed", status: "ERROR" };
+    }
+
     try {
-      // We manually validate the text fields here to avoid Zod throwing an error on the missing file during an edit
-      const textValues = {
-        title: formData.get("title") as string,
-        description: formData.get("description") as string,
-        category: formData.get("category") as string,
-        pitch,
-      };
-
-      // If creating new, OR if editing but they selected a new file, do full validation
-      if (!isEditMode || hasNewFile) {
-         await formSchema.parseAsync({ ...textValues, file });
-      }
-
-      // Route the data to the correct server action
+      // 4. Route the sanitized data to the correct server action
       const result = isEditMode 
         ? await editPitch(prevState, formData, pitch, initialData._id)
         : await createPitch(prevState, formData, pitch);
@@ -55,13 +62,8 @@ const StartupForm = ({ initialData }: { initialData?: any }) => {
 
       return result;
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        const fieldErrors = error.flatten().fieldErrors;
-        setErrors(fieldErrors as unknown as Record<string, string>);
-        toast({ title: "Error", description: "Please check your inputs", variant: "destructive" });
-        return { ...prevState, error: "Validation failed", status: "ERROR" };
-      }
-      toast({ title: "Error", description: "An unexpected error occurred", variant: "destructive" });
+      console.error("Mutation Error:", error);
+      toast({ title: "Error", description: "An unexpected database error occurred.", variant: "destructive" });
       return { ...prevState, error: "An unexpected error occurred", status: "ERROR" };
     }
   };
@@ -81,7 +83,9 @@ const StartupForm = ({ initialData }: { initialData?: any }) => {
           required
           defaultValue={initialData?.title || ""} 
         />
+        {errors.title && <p className="startup-form_error mt-2 text-red-500 text-sm">{errors.title}</p>}
       </div>
+      
       <div>
         <label htmlFor="description" className="startup-form_label">Description</label>
         <Textarea
@@ -91,7 +95,9 @@ const StartupForm = ({ initialData }: { initialData?: any }) => {
           required
           defaultValue={initialData?.description || ""} 
         />
+        {errors.description && <p className="startup-form_error mt-2 text-red-500 text-sm">{errors.description}</p>}
       </div>
+      
       <div>
         <label htmlFor="category" className="startup-form_label">Category</label>
         <Input
@@ -101,6 +107,7 @@ const StartupForm = ({ initialData }: { initialData?: any }) => {
           required
           defaultValue={initialData?.category || ""} 
         />
+        {errors.category && <p className="startup-form_error mt-2 text-red-500 text-sm">{errors.category}</p>}
       </div>
       
       <div>
@@ -127,7 +134,6 @@ const StartupForm = ({ initialData }: { initialData?: any }) => {
             type="file"
             accept="image/*"
             className="hidden"
-            // Remove 'required' if we are in edit mode
             required={!initialData} 
             onChange={(e) => {
               if (e.target.files && e.target.files[0]) {
@@ -136,7 +142,7 @@ const StartupForm = ({ initialData }: { initialData?: any }) => {
             }}
           />
         </label>
-        {errors.file && <p className="startup-form_error">{errors.file}</p>}
+        {errors.file && <p className="startup-form_error mt-2 text-red-500 text-sm">{errors.file}</p>}
       </div>
 
       <div data-color-mode="light">
@@ -149,6 +155,7 @@ const StartupForm = ({ initialData }: { initialData?: any }) => {
           height={300}
           style={{ borderRadius: 20, overflow: "hidden" }}
         />
+        {errors.pitch && <p className="startup-form_error mt-2 text-red-500 text-sm">{errors.pitch}</p>}
       </div>
 
       <button

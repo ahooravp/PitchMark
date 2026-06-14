@@ -1,21 +1,35 @@
 import { z } from "zod";
 
-// Inside your formSchema
-export const formSchema = z.object({
+// A reusable validator that only checks size and type, but doesn't force a requirement.
+// It bypasses the checks if the file is empty (size === 0).
+export const baseImageValidator = z.any()
+  .refine((file) => !file || file.size === 0 || file.type.startsWith("image/"), 
+    "Only image files (JPG, PNG, WebP) are allowed.")
+  .refine((file) => !file || file.size === 0 || file.size <= 5 * 1024 * 1024, 
+    "Image must be smaller than 5MB.");
+
+
+// The Startup Form (Requires an image)
+export const startupSchema = z.object({
   title: z.string().min(3).max(100),
   description: z.string().min(10).max(500),
   category: z.string().min(3).max(20),
   pitch: z.string().min(10),
   
-  // The Bulletproof File Validator
-  file: z.any()
-    // 1. Check if a file actually exists
-    .refine((file) => file?.size > 0, "An image is required.")
-    
-    // 2. Security Check: Ensure the MIME type is strictly an image
-    .refine((file) => file?.type.startsWith("image/"), "Only image files (JPG, PNG, SVG) are allowed.")
-    
-    // 3. Performance Check: Block massive files (e.g., max 5MB)
-    // 5MB = 5 * 1024 kilobytes * 1024 bytes
-    .refine((file) => file?.size <= 5 * 1024 * 1024, "Image must be smaller than 5MB."),
+  // We apply the base validator, then strictly require the file to exist
+  file: baseImageValidator
+    .refine((file) => file && file.size > 0, "A startup image is strictly required."),
+});
+
+// The Profile Settings Form (Image is optional)
+export const profileSchema = z.object({
+  name: z.string()
+    .min(2, "Name must be at least 2 characters.")
+    .max(50, "Name cannot exceed 50 characters."),
+  bio: z.string()
+    .max(500, "Bio cannot exceed 500 characters.")
+    .optional(),
+  
+  // We use the base validator, but don't force a size > 0 check
+  avatar: baseImageValidator, 
 });

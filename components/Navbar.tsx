@@ -3,11 +3,20 @@ import { Suspense } from "react";
 import { auth, signOut } from "@/auth";
 import { BadgePlus, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { client } from "@/sanity/lib/client";
+import { AUTHOR_BY_ID_QUERY } from "@/sanity/lib/queries";
 
 async function UserActions() {
   const session = await auth();
 
-  if (session && session?.user) {
+  if (session && session?.id) {
+    // Highly optimized fetch: memorized by Next.js until 'revalidateTag' is called
+    const liveUser = await client.fetch(
+      AUTHOR_BY_ID_QUERY, 
+      { id: session.id },
+      { next: { tags: [`user-profile-${session.id}`] } } 
+    );
+
     return (
       <>
         <Link
@@ -34,12 +43,15 @@ async function UserActions() {
         </form>
 
         <Link href={`/user/${session?.id}`}>
-          <Avatar className="size-10 hover:ring-2 hover:ring-primary transition-all duration-300 cursor-pointer">
+          <Avatar className="size-10 cursor-pointer">
             <AvatarImage
-              src={session?.user?.image || ""}
-              alt={session?.user?.name || ""}
+              src={liveUser?.image || session?.user?.image || ""}
+              alt={liveUser?.name || session?.user?.name || "User Avatar"}
+              className="object-cover"
             />
-            <AvatarFallback>AV</AvatarFallback>
+            <AvatarFallback className="bg-black-200 text-white font-medium">
+              {liveUser?.name?.charAt(0).toUpperCase() || session?.user?.name?.charAt(0).toUpperCase() || "U"}
+            </AvatarFallback>
           </Avatar>
         </Link>
       </>
@@ -47,16 +59,16 @@ async function UserActions() {
   }
 
   // The unified, bulletproof entry point
-return (
+  return (
     <div className="flex gap-4 items-center">
-      <Link 
-        href="/login" 
+      <Link
+        href="/login"
         className="hover:text-primary text-black-200 text-[15px] transition-colors font-medium"
       >
         Log In
       </Link>
-      <Link 
-        href="/signup" 
+      <Link
+        href="/signup"
         className="bg-black-200 text-white hover:bg-black-300 px-5 py-2.5 rounded-full text-[15px] transition-colors font-medium"
       >
         Sign Up
