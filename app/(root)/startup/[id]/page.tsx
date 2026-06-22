@@ -96,7 +96,7 @@ const page = async ({ params }: { params: { id: string } }) => {
             </div>
 
             {/* This button ONLY appears if the logged-in user is the author of the post */}
-            {session?.id === post.author._id && (
+            {session?.id === post.author?._id && (
               <Button
                 asChild
                 className="bg-transparent text-primary hover:text-primary-100 rounded-full mt-4"
