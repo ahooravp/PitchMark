@@ -15,11 +15,46 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type StartupReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "startup";
+};
+
+export type Playlist = {
+  _id: string;
+  _type: "playlist";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  select?: Array<
+    {
+      _key: string;
+    } & StartupReference
+  >;
+};
+
+export type Slug = {
+  _type: "slug";
+  current?: string;
+  source?: string;
+};
+
 export type AuthorReference = {
   _ref: string;
   _type: "reference";
   _weak?: boolean;
   [internalGroqTypeReferenceTo]?: "author";
+};
+
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
 export type Startup = {
@@ -28,23 +63,38 @@ export type Startup = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  title?: string;
   slug?: Slug;
   author?: AuthorReference;
   views?: number;
   description?: string;
   category?: string;
-  image?: string;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
   pitch?: Markdown;
-  title?: string
-  
 };
 
 export type Markdown = string;
 
-export type Slug = {
-  _type: "slug";
-  current?: string;
-  source?: string;
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
 };
 
 export type Author = {
@@ -97,22 +147,6 @@ export type SanityImageMetadata = {
   thumbHash?: string;
   hasAlpha?: boolean;
   isOpaque?: boolean;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
 };
 
 export type SanityFileAsset = {
@@ -175,18 +209,182 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | StartupReference
+  | Playlist
+  | Slug
   | AuthorReference
+  | SanityImageAssetReference
   | Startup
   | Markdown
-  | Slug
+  | SanityImageCrop
+  | SanityImageHotspot
   | Author
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
   | SanityImageMetadata
-  | SanityImageHotspot
-  | SanityImageCrop
   | SanityFileAsset
   | SanityAssetSourceData
   | SanityImageAsset
   | Geopoint;
+
+// Source: sanity/lib/queries.ts
+// Variable: STARTUPS_QUERY
+// Query: *[_type == "startup" && defined(slug.current) && (!defined($search) || category match $search || author -> name match $search || title match $search)] | order(_createdAt desc) {    _id,    title,    slug,    _createdAt,    author -> {      _id, name, image, bio        },    views,    description,    category,    image  }
+export type STARTUPS_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+  _createdAt: string;
+  author: {
+    _id: string;
+    name: string | null;
+    image: string | null;
+    bio: string | null;
+  } | null;
+  views: number | null;
+  description: string | null;
+  category: string | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+}>;
+
+// Source: sanity/lib/queries.ts
+// Variable: STARTUP_BY_ID_QUERY
+// Query: *[_type == "startup" && _id == $id][0] {    _id,    title,    slug,    _createdAt,    author -> {      _id, name, username, image, bio        },    views,    description,    category,    image,    pitch  }
+export type STARTUP_BY_ID_QUERY_RESULT = {
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+  _createdAt: string;
+  author: {
+    _id: string;
+    name: string | null;
+    username: string | null;
+    image: string | null;
+    bio: string | null;
+  } | null;
+  views: number | null;
+  description: string | null;
+  category: string | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  pitch: Markdown | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: STARTUP_VIEWS_QUERY
+// Query: *[_type == "startup" && _id == $id][0] {      _id, views  }
+export type STARTUP_VIEWS_QUERY_RESULT = {
+  _id: string;
+  views: number | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: AUTHOR_BY_GITHUB_ID_QUERY
+// Query: *[_type == "author" && id == $id][0] {    _id,    id,    name,    username,    email,    image,    bio      }
+export type AUTHOR_BY_GITHUB_ID_QUERY_RESULT = {
+  _id: string;
+  id: number | null;
+  name: string | null;
+  username: string | null;
+  email: string | null;
+  image: string | null;
+  bio: string | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: AUTHOR_BY_ID_QUERY
+// Query: *[_type == "author" && _id == $id][0] {    _id,    id,    name,    username,    email,    image,    bio      }
+export type AUTHOR_BY_ID_QUERY_RESULT = {
+  _id: string;
+  id: number | null;
+  name: string | null;
+  username: string | null;
+  email: string | null;
+  image: string | null;
+  bio: string | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: STARTUP_BY_AUTHOR_QUERY
+// Query: *[_type == "startup" && author._ref == $id ] | order(_createdAt desc) {    _id,    title,    slug,    _createdAt,    author -> {      _id, name, image, bio        },    views,    description,    category,    image  }
+export type STARTUP_BY_AUTHOR_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+  _createdAt: string;
+  author: {
+    _id: string;
+    name: string | null;
+    image: string | null;
+    bio: string | null;
+  } | null;
+  views: number | null;
+  description: string | null;
+  category: string | null;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+}>;
+
+// Source: sanity/lib/queries.ts
+// Variable: PLAYLIST_BY_SLUG_QUERY
+// Query: *[_type == "playlist" && slug.current == $slug][0] {    _id,    title,    slug,    select[] -> {      _id,      _createdAt,      title,      slug,      author -> {        _id, name, username, image, bio          },      views,      description,      category,      image,      pitch      }  }
+export type PLAYLIST_BY_SLUG_QUERY_RESULT = {
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+  select: Array<{
+    _id: string;
+    _createdAt: string;
+    title: string | null;
+    slug: Slug | null;
+    author: {
+      _id: string;
+      name: string | null;
+      username: string | null;
+      image: string | null;
+      bio: string | null;
+    } | null;
+    views: number | null;
+    description: string | null;
+    category: string | null;
+    image: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+    pitch: Markdown | null;
+  }> | null;
+} | null;
+
+// Query TypeMap
+import "@sanity/client";
+declare module "@sanity/client" {
+  interface SanityQueries {
+    '*[_type == "startup" && defined(slug.current) && (!defined($search) || category match $search || author -> name match $search || title match $search)] | order(_createdAt desc) {\n    _id,\n    title,\n    slug,\n    _createdAt,\n    author -> {\n      _id, name, image, bio    \n    },\n    views,\n    description,\n    category,\n    image\n  }': STARTUPS_QUERY_RESULT;
+    '*[_type == "startup" && _id == $id][0] {\n    _id,\n    title,\n    slug,\n    _createdAt,\n    author -> {\n      _id, name, username, image, bio    \n    },\n    views,\n    description,\n    category,\n    image,\n    pitch\n  }': STARTUP_BY_ID_QUERY_RESULT;
+    '*[_type == "startup" && _id == $id][0] {\n      _id, views\n  }': STARTUP_VIEWS_QUERY_RESULT;
+    '*[_type == "author" && id == $id][0] {\n    _id,\n    id,\n    name,\n    username,\n    email,\n    image,\n    bio    \n  }': AUTHOR_BY_GITHUB_ID_QUERY_RESULT;
+    '*[_type == "author" && _id == $id][0] {\n    _id,\n    id,\n    name,\n    username,\n    email,\n    image,\n    bio    \n  }': AUTHOR_BY_ID_QUERY_RESULT;
+    '*[_type == "startup" && author._ref == $id ] | order(_createdAt desc) {\n    _id,\n    title,\n    slug,\n    _createdAt,\n    author -> {\n      _id, name, image, bio    \n    },\n    views,\n    description,\n    category,\n    image\n  }': STARTUP_BY_AUTHOR_QUERY_RESULT;
+    '*[_type == "playlist" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    select[] -> {\n      _id,\n      _createdAt,\n      title,\n      slug,\n      author -> {\n        _id, name, username, image, bio    \n      },\n      views,\n      description,\n      category,\n      image,\n      pitch\n      }\n  }': PLAYLIST_BY_SLUG_QUERY_RESULT;
+  }
+}

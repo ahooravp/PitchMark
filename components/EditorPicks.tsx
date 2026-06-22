@@ -3,10 +3,15 @@ import { PLAYLIST_BY_SLUG_QUERY } from "@/sanity/lib/queries";
 import EditorPicksCarousel from "./EditorPicksCarousel";
 
 export default async function EditorPicks() {
-  const { select: editorPosts } = await client.fetch(PLAYLIST_BY_SLUG_QUERY, {
+  // 1. Fetch the raw object without destructuring immediately
+  const playlist = await client.fetch(PLAYLIST_BY_SLUG_QUERY, {
     slug: "editor-picks",
   });
 
+  // 2. Safely extract the selection (handles the case where playlist is null)
+  const editorPosts = playlist?.select;
+
+  // 3. Early return if the data is missing or empty
   if (!editorPosts || editorPosts.length === 0) return null;
 
   return (
@@ -18,7 +23,7 @@ export default async function EditorPicks() {
               Featured
             </span>
             <h2 className="text-26-semibold text-black-200">
-              Editor's Spotlight
+              Editor&apos;s Spotlight
             </h2>
           </div>
           <button className="hidden sm:block text-sm font-semibold text-black-300 hover:text-primary transition-colors">

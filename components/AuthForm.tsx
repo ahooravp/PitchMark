@@ -56,7 +56,7 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
         {/* Toggle link for users who clicked the wrong button */}
         <div className="mt-6 text-center text-sm font-medium text-black-100">
           {isLogin ? (
-            <p>Don't have an account? <Link href="/signup" className="text-primary hover:underline">Sign up</Link></p>
+            <p>Don&apos;t have an account? <Link href="/signup" className="text-primary hover:underline">Sign up</Link></p>
           ) : (
             <p>Already have an account? <Link href="/login" className="text-primary hover:underline">Log in</Link></p>
           )}

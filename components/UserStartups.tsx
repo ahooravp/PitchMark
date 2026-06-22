@@ -12,7 +12,7 @@ const UserStartups = async ({ id }: { id: string }) => {
           <StartupCard
             key={startup._id}
             post={startup}
-            isOnProfilePage={id === startup.author._id}
+            isOnProfilePage={id === startup.author?._id}
           />
         ))
       ) : (

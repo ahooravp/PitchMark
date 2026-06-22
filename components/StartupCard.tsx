@@ -4,11 +4,11 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { Author, Startup } from "@/sanity.types";
-import { Skeleton } from "./ui/skeleton";
+import { STARTUPS_QUERY_RESULT } from "@/sanity.types";import { Skeleton } from "./ui/skeleton";
 import { urlFor } from "@/sanity/lib/image";
 
-export type StartupTypeCard = Omit<Startup, "author"> & { author?: Author };
+// Extract the type of a single item from that array
+export type StartupTypeCard = NonNullable<STARTUPS_QUERY_RESULT>[0];
 
 const StartupCard = ({
   post,
