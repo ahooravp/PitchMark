@@ -38,7 +38,7 @@ const StartupCard = ({
     <div
       className={cn(
         "startup-card group",
-        variant === "compact" && "!py-5 !px-5 !gap-4",
+        variant === "compact" && "!py-5 !px-5 !gap-4 w-[300px]",
       )}
     >
       <div className="flex-between">
@@ -126,7 +126,7 @@ const StartupCard = ({
 
 export const StartupCardSkeleton = () => (
   <>
-    {[0, 1, 2, 3, 4].map((index: number) => (
+    {[0, 1, 2, 3, 4, 5].map((index: number) => (
       <li key={cn("skeleton", index)}>
         <Skeleton className="startup-card_skeleton" />
       </li>

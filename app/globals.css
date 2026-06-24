@@ -70,7 +70,6 @@
     @apply font-normal text-sm text-white-100;
   }
 
-
   /* Hero Section */
   .hero_container {
     @apply w-full min-h-[530px] flex justify-center items-center flex-col py-12 px-6 relative overflow-hidden bg-primary;
@@ -132,12 +131,12 @@
 
   /* Profile Section */
   .profile_container {
-    @apply w-full pb-12 pt-24 px-6 max-w-7xl mx-auto lg:flex-row flex-col flex gap-12;
+    @apply w-full pb-24 pt-24 px-6 max-w-7xl mx-auto lg:flex-row flex-col flex gap-12;
   }
 
   .profile_card {
     /* Added the 2px structural border here too */
-    @apply w-80 px-6 pb-8 pt-20 flex flex-col justify-center items-center bg-primary border-2 border-black-200 shadow-black-200 shadow-100 rounded-3xl relative z-0 h-fit max-lg:w-full transition-all ;
+    @apply w-80 px-6 pb-8 pt-20 flex flex-col justify-center items-center bg-primary border-2 border-black-200 shadow-black-200 shadow-100 rounded-3xl relative z-0 h-fit max-lg:w-full transition-all;
   }
 
   .profile_title {
@@ -145,7 +144,7 @@
   }
 
   .profile_image {
-    @apply rounded-full object-cover border-[2px] border-black-200 ;
+    @apply rounded-full object-cover border-[2px] border-black-200;
   }
 
   /* Idea Details */
@@ -200,15 +199,15 @@
   }
 
   .startup-card_img {
-    @apply w-full h-[200px] rounded-2xl object-cover shadow-sm mt-2  ;
+    @apply w-full h-[200px] rounded-2xl object-cover shadow-sm mt-2;
   }
 
   .startup-card_btn {
-    @apply rounded-full bg-black-100 font-medium text-[15px] text-white px-6 py-3 hover:bg-primary transition-colors duration-300 ;
+    @apply rounded-full bg-black-100 font-medium text-[15px] text-white px-6 py-3 hover:bg-primary transition-colors duration-300;
   }
 
   .startup-card_skeleton {
-    @apply w-full h-96 rounded-3xl bg-black/5 animate-pulse;
+    @apply w-[400px] h-[520px] rounded-3xl bg-black/5 animate-pulse;
   }
 
   /* Startup Form */
@@ -244,7 +243,7 @@
     @apply text-white flex justify-end items-center mt-5 fixed bottom-3 right-3;
   }
 
-.view-text {
+  .view-text {
     /* Uses a soft black glass effect to hover gracefully over any background */
     @apply font-medium text-[14px] bg-primary-200 text-black-100 border-2 border-primary-200  px-4 py-2 rounded-md  shadow-black-200 capitalize;
   }

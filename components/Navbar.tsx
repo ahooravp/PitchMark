@@ -6,6 +6,24 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { client } from "@/sanity/lib/client";
 import { AUTHOR_BY_ID_QUERY } from "@/sanity/lib/queries";
 
+// The precise 1:1 skeleton reflection of the authenticated state
+function NavbarSkeleton() {
+  return (
+    <div className="flex gap-4 items-center animate-pulse">
+      {/* 1. 'Create' Placeholder */}
+      <div className="max-sm:hidden w-14 h-6 bg-black/10 rounded"></div>
+      <div className="sm:hidden size-6 bg-black/10 rounded"></div>
+
+      {/* 2. 'Logout' Placeholder */}
+      <div className="max-sm:hidden w-16 h-6 bg-black/10 rounded"></div>
+      <div className="sm:hidden size-6 bg-black/10 rounded"></div>
+
+      {/* 3. Avatar Placeholder */}
+      <div className="size-10 bg-black/10 rounded-full"></div>
+    </div>
+  );
+}
+
 async function UserActions() {
   const session = await auth();
 
@@ -21,9 +39,9 @@ async function UserActions() {
       <>
         <Link
           href={"/startup/create"}
-          className="font-medium text-black-200 hover:text-primary transition-colors"
+          className="font-medium text-black-200 hover:text-primary transition-colors flex items-center"
         >
-          <span className="size-6 max-sm:hidden text-lg">Create</span>
+          <span className="max-sm:hidden text-lg">Create</span>
           <BadgePlus className="size-6 sm:hidden" />
         </Link>
 
@@ -85,6 +103,7 @@ const Navbar = () => {
           href="/"
           className="text-3xl font-bold tracking-tight flex items-center gap-1 group"
         >
+          {/* Note: In Next.js, prefer <Image> over <img> for static assets when possible to utilize optimization */}
           <img
             src="/pm-logo.png"
             alt="PitchMark Logo"
@@ -95,8 +114,9 @@ const Navbar = () => {
             <span>Mark</span>
           </p>
         </Link>
-        <div className="flex items-center gap-5 text-black">
-          <Suspense fallback={<span>Loading...</span>}>
+        <div className="flex items-center gap-4 text-black">
+          {/* Replaced 'Loading...' with the robust skeleton */}
+          <Suspense fallback={<NavbarSkeleton />}>
             <UserActions />
           </Suspense>
         </div>
