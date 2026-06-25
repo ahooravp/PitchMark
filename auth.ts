@@ -15,27 +15,30 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   pages: {
-    signIn: '/login', // Forces NextAuth to use your new custom page
+    signIn: '/login', 
   },
   callbacks: {
     async signIn({ user: { name, email, image }, profile, account }) {
-      // 1. Determine the correct ID and username based on the provider
-      const providerId = account?.provider === "google" ? profile?.sub : profile?.id;
+      // 1. Determine the correct ID and cast it immediately to a String
+      const rawProviderId = account?.provider === "google" ? profile?.sub : profile?.id;
+      const providerId = String(rawProviderId); 
+      
       const providerLogin = account?.provider === "google" ? email?.split('@')[0] : profile?.login;
       const providerBio = profile?.bio || "";
 
-      // 2. Fetch the user using the correct ID (cast to string just in case)
+      // 2. Query the user
       const existingUser = await client
         .withConfig({ useCdn: false })
         .fetch(AUTHOR_BY_GITHUB_ID_QUERY, {
-          id: String(providerId),
+          id: providerId,
         });
 
-      // 3. Create the user in Sanity if they don't exist
+      // 3. BULLETPROOF CREATION: Use createIfNotExists and a deterministic _id
       if (!existingUser) {
-        await writeClient.create({
+        await writeClient.createIfNotExists({
           _type: "author",
-          id: String(providerId),
+          _id: `author-${providerId}`, // Database-level uniqueness guarantee
+          id: providerId, 
           name,
           username: providerLogin,
           email,
@@ -48,16 +51,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async jwt({ token, account, profile }) {
       if (account && profile) {
-        // Also fix the JWT callback so it correctly grabs the Google 'sub'
-        const providerId = account?.provider === "google" ? profile?.sub : profile?.id;
+        const rawProviderId = account?.provider === "google" ? profile?.sub : profile?.id;
+        const providerId = String(rawProviderId);
 
         const user = await client
           .withConfig({ useCdn: false })
           .fetch(AUTHOR_BY_GITHUB_ID_QUERY, {
-            id: String(providerId),
+            id: providerId,
           });
 
-        token.id = user?._id;
+        // 4. Fallback: If user isn't returned due to indexing delay, construct the expected _id
+        token.id = user?._id || `author-${providerId}`;
       }
 
       return token;
