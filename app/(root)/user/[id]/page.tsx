@@ -49,7 +49,7 @@ async function ProfileDetails({ params }: { params: Promise<{ id: string }> }) {
 
         {isProfileOwner && (
 <Link 
-  href={`/user/${id}/edit`} 
+  href={`/settings`} 
   className="mt-4 px-4 py-2 bg-transparent text-white rounded-full font-bold border-2 border-white/50 hover:bg-white hover:text-black-200 hover:border-white hover:-translate-y-1   transition-all duration-300 text-center w-full block"
 >
   Edit Profile

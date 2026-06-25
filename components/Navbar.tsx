@@ -61,7 +61,7 @@ async function UserActions() {
         </form>
 
         <Link href={`/user/${session?.id}`}>
-          <Avatar className="size-10 cursor-pointer">
+          <Avatar className="size-10 cursor-pointer hover:ring-2 hover:ring-primary transition-all">
             <AvatarImage
               src={liveUser?.image || session?.user?.image || ""}
               alt={liveUser?.name || session?.user?.name || "User Avatar"}
