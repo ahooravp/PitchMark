@@ -12,6 +12,7 @@ import ViewTracker from "@/components/ViewTracker";
 import { urlFor } from "@/sanity/lib/image";
 import { auth } from "@/auth"; // <-- 1. Auth is properly imported
 import { Button } from "@/components/ui/button"; // <-- 2. Button is imported
+import DeleteStartupButton from "@/components/DeleteStartupButton";
 
 const md = markdownit();
 
@@ -97,12 +98,19 @@ const page = async ({ params }: { params: { id: string } }) => {
 
             {/* This button ONLY appears if the logged-in user is the author of the post */}
             {session?.id === post.author?._id && (
-              <Button
-                asChild
-                className="bg-transparent text-primary hover:text-primary-100 rounded-full mt-4"
-              >
-                <Link href={`/startup/${id}/edit`}>Edit Startup</Link>
-              </Button>
+              <div className="flex gap-1 items-center ">
+                <Button
+                  asChild
+                  className="rounded-full mt-4 bg-transparent text-primary hover:bg-primary/10 transition-colors duration-300"
+                >
+                  <Link href={`/startup/${id}/edit`}>Edit pitch</Link>
+                </Button>
+
+                <DeleteStartupButton
+                  startupId={id}
+                  authorId={post.author._id}
+                />
+              </div>
             )}
           </div>
 
