@@ -7,12 +7,12 @@ import ProfileForm from "./ProfileForm";
 export default async function SettingsPage() {
   const session = await auth();
   
-  if (!session?.id) {
+  if (!session?.user?.id) {
     redirect("/login");
   }
 
   const user = await client.withConfig({ useCdn: false }).fetch(AUTHOR_BY_ID_QUERY, {
-    id: session.id,
+    id: session?.user?.id,
   });
 
   // Bulletproof Check: If the auth session exists but the database document is missing,

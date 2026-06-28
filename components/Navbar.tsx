@@ -27,12 +27,12 @@ function NavbarSkeleton() {
 async function UserActions() {
   const session = await auth();
 
-  if (session && session?.id) {
+  if (session && session?.user?.id) {
     // Highly optimized fetch: memorized by Next.js until 'revalidateTag' is called
     const liveUser = await client.fetch(
       AUTHOR_BY_ID_QUERY, 
-      { id: session.id },
-      { next: { tags: [`user-profile-${session.id}`] } } 
+      { id: session?.user?.id },
+      { next: { tags: [`user-profile-${session?.user?.id}`] } } 
     );
 
     return (
@@ -60,7 +60,7 @@ async function UserActions() {
           </button>
         </form>
 
-        <Link href={`/user/${session?.id}`}>
+        <Link href={`/user/${session?.user?.id}`}>
           <Avatar className="size-10 cursor-pointer hover:ring-2 hover:ring-primary transition-all">
             <AvatarImage
               src={liveUser?.image || session?.user?.image || ""}

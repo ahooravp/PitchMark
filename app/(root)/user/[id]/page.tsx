@@ -22,7 +22,7 @@ async function ProfileDetails({ params }: { params: Promise<{ id: string }> }) {
 
   if (!user) return notFound();
 
-  const isProfileOwner = session?.id === id;
+  const isProfileOwner = session?.user?.id === id;
 
   return (
     <>

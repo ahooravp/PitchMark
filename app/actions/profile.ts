@@ -8,7 +8,7 @@ import { profileSchema } from "@/lib/validation";
 export async function updateProfile(formData: FormData) {
   // 1. Session Authorization
   const session = await auth();
-  if (!session?.id) {
+  if (!session?.user?.id) {
     throw new Error("Unauthorized");
   }
 
@@ -58,13 +58,13 @@ export async function updateProfile(formData: FormData) {
 
     // 7. Execute the database update
     await writeClient
-      .patch(session.id)
+      .patch(session?.user?.id)
       .set(patchData)
       .commit();
 
     // 8. Update user's cached data
     // @ts-expect-error - Next.js local type definition mismatch; runtime expects 1 argument.
-    revalidateTag(`user-profile-${session.id}`);
+    revalidateTag(`user-profile-${session?.user?.id}`);
     
     return { success: true };
   } catch (error) {

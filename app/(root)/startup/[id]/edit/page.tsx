@@ -16,7 +16,7 @@ export default async function EditStartupPage({ params }: { params: Promise<{ id
   if (!post) return notFound();
 
   // 3. SECURITY GATE: Kick them out if they are not the author of this post
-  if (session.id !== post.author?._id) {
+  if (session?.user?.id !== post.author?._id) {
     redirect(`/startup/${id}`);
   }
 

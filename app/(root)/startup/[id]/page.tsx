@@ -97,7 +97,7 @@ const page = async ({ params }: { params: { id: string } }) => {
             </div>
 
             {/* This button ONLY appears if the logged-in user is the author of the post */}
-            {session?.id === post.author?._id && (
+            {session?.user?.id === post.author?._id && (
               <div className="flex gap-1 items-center ">
                 <Button
                   asChild
@@ -108,7 +108,7 @@ const page = async ({ params }: { params: { id: string } }) => {
 
                 <DeleteStartupButton
                   startupId={id}
-                  authorId={post.author._id}
+                  authorId={post.author?._id || ""}
                 />
               </div>
             )}
