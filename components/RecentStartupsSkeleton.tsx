@@ -22,7 +22,7 @@ export default function RecentStartupsSkeleton() {
               className="snap-center min-w-[260px] md:min-w-[300px]"
             >
               {/* Reusing your existing global skeleton class */}
-              <div className="startup-card_skeleton"></div>
+                <div className="startup-card_skeleton !w-[300px] !h-[400px]"></div>
             </li>
           ))}
         </ul>
