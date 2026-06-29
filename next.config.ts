@@ -1,4 +1,5 @@
 import { withSentryConfig } from "@sentry/nextjs";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -14,7 +15,13 @@ const nextConfig = {
     appIsrStatus: true,
     buildActivity: true,
     buildActivityPosition: "bottom-right"
-  }
+  },
+  // BULLETPROOF BUFFER: 5MB for the image + 1MB buffer for form text/headers
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "6mb",
+    },
+  },
 };
 
 export default withSentryConfig(nextConfig, {

@@ -5,18 +5,44 @@ import { writeClient } from "@/sanity/lib/write-client";
 import { client } from "@/sanity/lib/client";
 import { STARTUPS_BY_IDS_QUERY } from "@/sanity/lib/queries";
 
-// 1. Define the strict contract for your form state
 export type FormState = {
   error: string;
   status: "INITIAL" | "SUCCESS" | "ERROR";
   _id?: string;
 };
 
+// 1. THE NEW DEDICATED UPLOAD ACTION
+export const uploadStartupImage = async (formData: FormData) => {
+  const session = await auth();
+
+  // Strict security: Do not allow unauthenticated users to upload files
+  if (!session) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  const file = formData.get("file") as File;
+  
+  if (!file || file.size === 0) {
+    return { success: false, error: "No file provided" };
+  }
+
+  try {
+    const imageAsset = await writeClient.assets.upload("image", file, {
+      filename: file.name,
+    });
+
+    return { success: true, assetId: imageAsset._id };
+  } catch (error) {
+    console.error("Asset upload failed:", error);
+    return { success: false, error: "Failed to upload image to the server." };
+  }
+};
+
 export const createPitch = async (
-  prevState: FormState, 
+  prevState: FormState,
   formData: FormData,
   pitch: string
-): Promise<FormState> => { // <-- Force the return type to guarantee consistency
+): Promise<FormState> => {
   const session = await auth();
 
   if (!session) {
@@ -30,13 +56,18 @@ export const createPitch = async (
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const category = formData.get("category") as string;
-  const file = formData.get("file") as File;
+  const assetId = formData.get("assetId") as string;
+
+  // 2. Strict validation: Ensure the background upload completed
+  if (!assetId) {
+    return {
+      ...prevState,
+      status: "ERROR",
+      error: "An uploaded image is required to create a startup.",
+    };
+  }
 
   try {
-    const imageAsset = await writeClient.assets.upload("image", file, {
-      filename: file.name,
-    });
-
     const startup = {
       _type: "startup",
       title,
@@ -48,14 +79,14 @@ export const createPitch = async (
       },
       author: {
         _type: "reference",
-        _ref: session?.user?.id, 
+        _ref: session?.user?.id,
       },
       pitch,
       image: {
         _type: "image",
         asset: {
           _type: "reference",
-          _ref: imageAsset._id,
+          _ref: assetId,
         },
       },
     };
@@ -68,9 +99,8 @@ export const createPitch = async (
       error: "",
       _id: result._id,
     };
-  } catch (error: unknown) { // <-- Safely type the error
+  } catch (error: unknown) {
     console.error("Failed to create pitch:", error);
-
     return {
       ...prevState,
       status: "ERROR",
@@ -80,11 +110,11 @@ export const createPitch = async (
 };
 
 export const editPitch = async (
-  prevState: FormState, // <-- Replaced 'any'
+  prevState: FormState,
   formData: FormData,
   pitch: string,
-  startupId: string 
-): Promise<FormState> => { // <-- Force the return type
+  startupId: string
+): Promise<FormState> => {
   const session = await auth();
 
   if (!session) {
@@ -94,11 +124,9 @@ export const editPitch = async (
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const category = formData.get("category") as string;
-  const file = formData.get("file") as File | null;
+  const assetId = formData.get("assetId") as string; // Will be empty if no new file was uploaded
 
   try {
-    // 2. Use a safe Record type instead of 'any'
-    // This tells TS: "This is an object with string keys and safely unknown values"
     const updateData: Record<string, unknown> = {
       title,
       description,
@@ -106,16 +134,13 @@ export const editPitch = async (
       pitch,
     };
 
-    if (file && file.size > 0) {
-      const imageAsset = await writeClient.assets.upload("image", file, {
-        filename: file.name,
-      });
-      
+    // 3. Only patch the image if a brand new assetId was provided
+    if (assetId) {
       updateData.image = {
         _type: "image",
         asset: {
           _type: "reference",
-          _ref: imageAsset._id,
+          _ref: assetId,
         },
       };
     }
@@ -131,7 +156,7 @@ export const editPitch = async (
       error: "",
       _id: result._id,
     };
-  } catch (error: unknown) { // <-- Safely type the error
+  } catch (error: unknown) {
     console.error("Failed to update pitch:", error);
     return {
       ...prevState,
@@ -145,8 +170,8 @@ export const getRecentStartupsData = async (ids: string[]) => {
   try {
     const startups = await client.fetch(STARTUPS_BY_IDS_QUERY, { ids });
     return startups;
-  } catch (error: unknown) { // <-- Safely type the error
+  } catch (error: unknown) {
     console.error("Failed to fetch recent startups:", error);
-    return []; 
+    return [];
   }
 };
