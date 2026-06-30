@@ -25,7 +25,7 @@ export async function updateProfile(formData: FormData) {
   if (!validatedFields.success) {
     return { 
       success: false, 
-      error: validatedFields.error.errors[0].message 
+      error: validatedFields.error.issues[0].message 
     };
   }
 
@@ -47,7 +47,7 @@ export async function updateProfile(formData: FormData) {
     }
 
     // 6. Build the mutation patch
-    const patchData: any = {
+    const patchData: Record<string, string> = {
       name: name.trim(),
       bio: bio ? bio.trim() : "",
     };
