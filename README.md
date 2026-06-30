@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Startup Directory Platform
 
-## Getting Started
+**[Live Demo](https://your-vercel-deployment-link.vercel.app)** | **[Video Walkthrough](Link to a Loom or YouTube video if you have one)**
 
-First, run the development server:
+A modern, full-stack web application built for founders to pitch their startups and for users to discover the next big thing. 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This platform provides a seamless, highly polished user experience for submitting startup details, complete with a Markdown editor for comprehensive pitches, secure image uploads, and an aesthetic glassmorphic UI. Under the hood, it utilizes a strict, robust architecture leveraging Next.js Server Actions, Sanity CMS, and uncompromising client-to-server validation.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* **Secure Authentication:** Passwordless OAuth login via NextAuth (Auth.js) supporting both GitHub and Google providers, with normalized database mapping.
+* **Founder Profiles:** Automatically generated user profiles with the ability to update personal bios and avatars securely.
+* **Rich Text Pitches:** Integrated Markdown editor (`@uiw/react-md-editor`) allowing founders to format their startup pitches beautifully.
+* **Optimized Submission Pipeline:** * Strict mathematical client-side validation using Zod.
+  * Decoupled background image uploading for heavy assets to prevent submission bottlenecks.
+  * Real-time, progressive upload UI with controlled state management to prevent data loss on failed submissions.
+* **Modern UI/UX:** Built with Tailwind CSS, featuring visual harmony, interactive glass effects (`backdrop-blur`), and responsive design.
+* **Error Tracking:** Fully integrated with Sentry for real-time edge and server crash monitoring.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠 Tech Stack
 
-## Learn More
+* **Framework:** Next.js (App Router, Server Actions)
+* **Language:** TypeScript
+* **Styling:** Tailwind CSS
+* **Database & Content Management:** Sanity CMS (Headless)
+* **Authentication:** NextAuth.js (Auth.js)
+* **Validation:** Zod
+* **Monitoring:** Sentry
 
-To learn more about Next.js, take a look at the following resources:
+## 🏗 Architecture Highlights
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project prioritizes data integrity and server protection without compromising the user experience:
+1. **The Double-Boundary Validation:** Form submissions are strictly validated on the client side via Zod to preserve user input state, and then validated again on the server to prevent malicious API bypassing.
+2. **Decoupled Asset Management:** Heavy image payloads are intercepted at the file-selection level and uploaded to Sanity's secure asset servers in the background. The final Server Action only mutates lightweight reference strings, ensuring database writes execute in milliseconds.
+3. **Type-Safe Ecosystem:** From Sanity query projections to form states and Zod schemas, the entire data pipeline is strictly typed to catch errors at compile time.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🔄 The User Flow
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Authentication:** Users sign in securely using their existing GitHub or Google accounts.
+2. **The Pitch:** Founders navigate to the submission form to pitch their startup.
+3. **Background Processing:** As the founder uploads a thumbnail, the image is securely transmitted to the Sanity asset server in the background, keeping the UI completely unblocked.
+4. **Validation & Publishing:** Upon clicking submit, the form validates the text payload and the image reference ID. If successful, the document is instantly compiled and published to the live directory.
