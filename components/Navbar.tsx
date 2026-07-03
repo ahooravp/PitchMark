@@ -78,16 +78,18 @@ async function UserActions() {
   }
 
   return (
-    <div className="flex gap-4 items-center">
+    <div className="flex gap-2 xs:gap-4 items-center">
       <Link
         href="/login"
-        className="hover:text-primary text-black-200 text-[15px] transition-colors font-medium"
+        // CRITICAL FIX: Scaled text down to 13px on mobile and forced whitespace-nowrap
+        className="hover:text-primary text-black-200 text-[13px] xs:text-[15px] transition-colors font-medium whitespace-nowrap"
       >
         Log In
       </Link>
       <Link
         href="/signup"
-        className="bg-black-200 text-white hover:bg-black-300 px-5 py-2.5 rounded-full text-[15px] transition-colors font-medium"
+        // CRITICAL FIX: Compressed padding (px-3 py-1.5) and text size strictly for narrow mobile viewports
+        className="bg-black-200 text-white hover:bg-black-300 px-3 py-1.5 xs:px-5 xs:py-2.5 rounded-full text-[13px] xs:text-[15px] transition-colors font-medium whitespace-nowrap"
       >
         Sign Up
       </Link>
