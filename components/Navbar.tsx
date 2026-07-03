@@ -78,7 +78,7 @@ async function UserActions() {
   }
 
   return (
-    <div className="flex gap-2 xs:gap-4 items-center">
+    <div className="flex gap-2 xs:gap-4 items-center ">
       <Link
         href="/login"
         // CRITICAL FIX: Scaled text down to 13px on mobile and forced whitespace-nowrap
@@ -103,12 +103,12 @@ const Navbar = () => {
       <nav className="flex justify-between items-center">
         <Link
           href="/"
-          className="text-3xl font-bold tracking-tight flex items-center gap-1 group max-xxs:text-2xl"
+          className="text-3xl font-bold tracking-tight flex items-center gap-1 group max-xs:text-2xl"
         >
           <img
             src="/pm-logo.png"
             alt="PitchMark Logo"
-            className="h-6 w-auto transition-transform duration-300 flex align-bottom max-xxs:h-5"
+            className="h-6 w-auto transition-transform duration-300 flex align-bottom max-xs:h-4 max-xs:scale-110"
           />
           <p className="scale-105 [@media(hover:hover)]:group-hover:translate-x-1 group-active:translate-x-1 transition-transform duration-300">
             <span className="text-primary">Pitch</span>

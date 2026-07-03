@@ -60,7 +60,7 @@ const workSans = localFont({
 
 export const metadata: Metadata = {
   title: "Pitch Mark",
-  description: "A place to submit your ideas.",
+  description: "A place to share new ideas.",
 };
 
 export default function RootLayout({
@@ -72,7 +72,7 @@ export default function RootLayout({
     <html lang="en" className={cn("font-sans", workSans.variable)}>
       <body>
         <Navbar />
-        <main className="pt-16">
+        <main className="pt-14 xs:pt-16">
         {children}
         </main>
         <Footer />

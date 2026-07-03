@@ -202,7 +202,7 @@
   }
 
   .startup-card_btn {
-    @apply rounded-full bg-black-100 font-medium text-[14px] sm:text-[15px] text-white px-4 py-2 sm:px-6 sm:py-3 hover:bg-primary transition-colors duration-300;
+    @apply rounded-full bg-black-100 font-medium text-[14px] sm:text-[15px] text-white px-4 py-2 sm:px-6 sm:py-3 hover:bg-primary transition-colors duration-300 active:bg-primary;
   }
 
   .startup-card_skeleton {
