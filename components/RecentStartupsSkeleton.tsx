@@ -14,15 +14,12 @@ export default function RecentStartupsSkeleton() {
       {/* 2. Skeleton Carousel mimicking the Editor Picks skeleton */}
       <div className="relative group mt-4">
         <ul className="card_grid-sm-editor relative w-full overflow-hidden hide-scrollbar">
-          {/* We map 3 dummy items to fill the viewport while loading */}
           {[1, 2, 3, 4].map((index) => (
             <li
               key={index}
-              /* Matched the exact widths from the RecentStartups cards */
-              className="snap-center min-w-[260px] md:min-w-[300px]"
+              className="snap-center flex flex-col w-[260px] sm:w-[280px] md:w-[300px] shrink-0 [&>*]:w-full [&>*]:max-w-full"
             >
-              {/* Reusing your existing global skeleton class */}
-                <div className="startup-card_skeleton !w-[300px] !h-[400px]"></div>
+              <div className="startup-card_skeleton w-full !h-[400px]"></div>
             </li>
           ))}
         </ul>

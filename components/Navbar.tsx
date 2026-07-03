@@ -6,7 +6,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { client } from "@/sanity/lib/client";
 import { AUTHOR_BY_ID_QUERY } from "@/sanity/lib/queries";
 
-// The precise 1:1 skeleton reflection of the authenticated state
 function NavbarSkeleton() {
   return (
     <div className="flex gap-4 items-center animate-pulse">
@@ -30,9 +29,9 @@ async function UserActions() {
   if (session && session?.user?.id) {
     // Highly optimized fetch: memorized by Next.js until 'revalidateTag' is called
     const liveUser = await client.fetch(
-      AUTHOR_BY_ID_QUERY, 
+      AUTHOR_BY_ID_QUERY,
       { id: session?.user?.id },
-      { next: { tags: [`user-profile-${session?.user?.id}`] } } 
+      { next: { tags: [`user-profile-${session?.user?.id}`] } },
     );
 
     return (
@@ -68,7 +67,9 @@ async function UserActions() {
               className="object-cover"
             />
             <AvatarFallback className="bg-black-200 text-white font-medium">
-              {liveUser?.name?.charAt(0).toUpperCase() || session?.user?.name?.charAt(0).toUpperCase() || "U"}
+              {liveUser?.name?.charAt(0).toUpperCase() ||
+                session?.user?.name?.charAt(0).toUpperCase() ||
+                "U"}
             </AvatarFallback>
           </Avatar>
         </Link>
@@ -76,7 +77,6 @@ async function UserActions() {
     );
   }
 
-  // The unified, bulletproof entry point
   return (
     <div className="flex gap-4 items-center">
       <Link
@@ -101,21 +101,19 @@ const Navbar = () => {
       <nav className="flex justify-between items-center">
         <Link
           href="/"
-          className="text-3xl font-bold tracking-tight flex items-center gap-1 group"
+          className="text-3xl font-bold tracking-tight flex items-center gap-1 group max-xxs:text-2xl"
         >
-          {/* Note: In Next.js, prefer <Image> over <img> for static assets when possible to utilize optimization */}
           <img
             src="/pm-logo.png"
             alt="PitchMark Logo"
-            className="h-6 w-auto transition-transform duration-300 flex align-bottom"
+            className="h-6 w-auto transition-transform duration-300 flex align-bottom max-xxs:h-5"
           />
-          <p className="scale-105 group-hover:translate-x-1 transition-transform duration-300">
+          <p className="scale-105 [@media(hover:hover)]:group-hover:translate-x-1 group-active:translate-x-1 transition-transform duration-300">
             <span className="text-primary">Pitch</span>
             <span>Mark</span>
           </p>
         </Link>
         <div className="flex items-center gap-4 text-black">
-          {/* Replaced 'Loading...' with the robust skeleton */}
           <Suspense fallback={<NavbarSkeleton />}>
             <UserActions />
           </Suspense>

@@ -19,7 +19,7 @@ export default async function MainContent({ searchParams }: { searchParams: Prom
       )}
 
       {/* Main Discover/Search Section */}
-      <section className="px-6 pt-10 pb-16 max-w-7xl mx-auto">
+      <section className="px-6 pt-10 pb-16 max-w-7xl mx-auto wide:max-w-10xl">
         <div className="flex justify-between items-end mb-6">
           <div>
             <span className="text-black-300 font-bold tracking-widest text-[12px] uppercase mb-1 block">

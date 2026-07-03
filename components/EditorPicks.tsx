@@ -16,7 +16,7 @@ export default async function EditorPicks() {
 
   return (
     <section className="w-full bg-primary/5 border-b border-black/5 py-4">
-      <div className="max-w-7xl mx-auto px-6 mt-3">
+      <div className="max-w-7xl mx-auto px-6 mt-3 wide:max-w-10xl">
         <div className="flex justify-between items-end ">
           <div>
             <span className="text-primary font-bold tracking-widest text-[12px] uppercase mb-1 block">
@@ -31,7 +31,7 @@ export default async function EditorPicks() {
           </button>
         </div>
       </div>
-      <div className="max-w-7.5xl mx-auto px-6">
+      <div className="max-w-7.5xl mx-auto md:px-6 wide:max-w-11xl">
         <EditorPicksCarousel editorPosts={editorPosts} />
       </div>
     </section>

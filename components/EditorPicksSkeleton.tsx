@@ -3,9 +3,8 @@ import React from "react";
 export default function EditorPicksSkeleton() {
   return (
     <section className="w-full bg-primary/5 border-b border-black/5 py-7">
-      
       {/* 1. Header Wrapper: Matches the exact max-w and top margin of the live UI */}
-      <div className="max-w-7xl mx-auto px-6 mt-3">
+      <div className="max-w-7xl mx-auto px-6 mt-3 xl:max-w-10xl">
         <div className="flex justify-between items-end">
           <div>
             {/* 'Featured' Eyebrow */}
@@ -19,19 +18,16 @@ export default function EditorPicksSkeleton() {
       </div>
 
       {/* 2. Carousel Wrapper: Matches the exact max-w of the live UI */}
-      <div className="max-w-7.5xl mx-auto px-6">
-        
+      <div className="max-w-7.5xl mx-auto px-6 xl:max-w-11xl">
         {/* Matches the 'relative group mt-4' from EditorPicksCarousel.tsx */}
         <div className="relative group mt-4">
-          
           <ul className="card_grid-sm-editor relative w-full overflow-hidden flex gap-5">
-            {[1, 2, 3, 4].map((index) => (
+            {[1, 2, 3, 4,5].map((index) => (
               <li
                 key={index}
                 // CRITICAL FIX: These dimensions now exactly match EditorPicksCarousel.tsx
-                className="snap-center min-w-[260px] md:min-w-[300px]"
+                className="snap-center w-[80vw] sm:w-[280px] md:min-w-[300px] shrink-0"
               >
-
                 <div className="startup-card_skeleton !w-[300px] !h-[400px]"></div>
               </li>
             ))}

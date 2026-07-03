@@ -19,13 +19,12 @@ export default function ProfileForm({ user }: { user: UserProfile }) {
       toast({
         title: "Success",
         description: "Your profile has been updated.",
-        // Omitting the variant defaults to your white/green success styling
       });
     } else {
       toast({
         title: "Update Failed",
         description: result.error,
-        variant: "destructive", // Triggers the red AlertCircle styling in your toast.tsx
+        variant: "destructive", // Triggers the red AlertCircle styling in toast.tsx
       });
     }
   };
@@ -99,7 +98,8 @@ export default function ProfileForm({ user }: { user: UserProfile }) {
         />
       </div>
 
-      <div className="pt-4 flex justify-end border-t border-black/5 mt-8">
+      <div className="pt-6 sm:pt-4 sm:flex sm:justify-end border-t border-black/5 mt-6 sm:mt-8">
+        {" "}
         <SubmitButton />
       </div>
     </form>

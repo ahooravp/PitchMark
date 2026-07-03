@@ -2,21 +2,18 @@ export default function SettingsLoading() {
   return (
     <div className="min-h-screen bg-gray-50/50 pt-14 pb-20 px-5 font-work-sans">
       <div className="max-w-2xl mx-auto">
-        
-        {/* Page Title Skeleton */}
-        <div className="h-9 w-48 bg-gray-200 animate-pulse rounded-md mb-8" />
+        <div className="h-9 w-48 bg-gray-200 animate-pulse rounded-md mb-6 sm:mb-8" />
 
-        {/* The Glassmorphism Container */}
-        <div className="bg-white/80 backdrop-blur-md border border-black/10 shadow-sm rounded-2xl p-8">
+        {/* MATCH LIVE UI: Scaled padding */}
+        <div className="bg-white/80 backdrop-blur-md border border-black/10 shadow-sm rounded-2xl p-5 sm:p-8">
           <div className="space-y-6">
-            
-            {/* Avatar Section Skeleton */}
-            <div className="flex items-center gap-6 mb-8">
-              <div className="size-24 rounded-full bg-gray-200 animate-pulse" />
+            {/* MATCH LIVE UI: Avatar Gap and Size */}
+            <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+              <div className="size-20 sm:size-24 shrink-0 rounded-full bg-gray-200 animate-pulse" />
               <div className="space-y-2">
                 <div className="h-4 w-24 bg-gray-200 animate-pulse rounded" />
-                <div className="h-3 w-48 bg-gray-200 animate-pulse rounded" />
-                <div className="h-3 w-40 bg-gray-200 animate-pulse rounded" />
+                <div className="h-3 w-40 sm:w-48 bg-gray-200 animate-pulse rounded" />
+                <div className="h-3 w-32 sm:w-40 bg-gray-200 animate-pulse rounded" />
               </div>
             </div>
 
@@ -47,10 +44,9 @@ export default function SettingsLoading() {
             </div>
 
             {/* Submit Button Skeleton */}
-            <div className="pt-4 flex justify-end border-t border-black/5 mt-8">
-              <div className="h-12 w-32 bg-gray-200 animate-pulse rounded-full" />
+            <div className="pt-6 sm:pt-4 sm:flex sm:justify-end border-t border-black/5 mt-6 sm:mt-8">
+              <div className="h-12 w-full sm:w-32 bg-gray-200 animate-pulse rounded-full" />
             </div>
-
           </div>
         </div>
       </div>

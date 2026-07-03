@@ -12,6 +12,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        // Enforcing your exact pixel thresholds
+        'xxs': '350px',
+        'xs': '550px',
+        'md': '768px',
+        'desk': '1020px',
+        'lg': '1024px',
+        'xl': '1280px',
+        'wide': '1600px',
+      },
       colors: {
         primary: {
           "100": "#cc2221", // Dark burgundy
@@ -33,8 +43,14 @@ const config: Config = {
         },
       },
       maxWidth: {
+        
         "7.5xl": "85rem", // 1360px
         "8xl": "90rem", // 1440px (Premium desktop width)
+        "9xl": "95rem", // 1520px (Ultra-wide desktop width)
+        "10xl": "100rem", // 1600px (Extra-wide desktop width)
+        "11xl": "105rem", // 1680px (Even wider desktop width)
+        "12xl": "110rem", // 1760px (Even wider desktop width)
+        "13xl": "115rem", // 1840px (Even wider desktop width)
       },
       fontFamily: {
         "work-sans": ["var(--font-work-sans)", "sans-serif"],

@@ -43,18 +43,20 @@ const page = async ({ params }: { params: { id: string } }) => {
       </section>
 
       <div className="w-full bg-white-100 min-h-screen">
-        <section className="section_container">
+        <section className="section_container wide:max-w-10xl">
           <img
             src={imageUrl}
             alt="thumbnail"
-            className="w-full max-w-5xl mx-auto h-auto min-h-[300px] max-h-[550px] rounded-xl object-cover shadow-sm"
+            className="w-full max-w-5xl mx-auto h-auto min-h-[200px] sm:min-h-[300px] max-h-[550px] rounded-xl object-cover shadow-sm"
           />
 
-          <div className="max-w-5xl mx-auto mt-12">
-            <div className="flex-between gap-5 py-4 pl-4 pr-6 rounded-l-full bg-gradient-to-r from-primary/5 to-transparent mt-8">
+          <div className="max-w-5xl mx-auto mt-8 sm:mt-12">
+            {/* CRITICAL FIX: Locked to flex-row and items-center for all breakpoints */}
+            <div className="flex flex-row justify-between items-center gap-3 py-4 px-5 sm:pl-4 sm:pr-6 rounded-2xl sm:rounded-l-full sm:rounded-r-none bg-gradient-to-br sm:bg-gradient-to-r from-primary/5 to-transparent mt-6 sm:mt-8">
+              {/* CRITICAL FIX: Added min-w-0 to allow the text inside to shrink and truncate */}
               <Link
                 href={`/user/${post.author?._id}`}
-                className="flex gap-3 items-center group"
+                className="flex gap-3 items-center group min-w-0"
               >
                 <img
                   src={
@@ -62,20 +64,22 @@ const page = async ({ params }: { params: { id: string } }) => {
                     "https://placehold.co/64x64/EEE/31343C?font=montserrat&text=User"
                   }
                   alt="avatar"
-                  className="w-16 h-16 rounded-full drop-shadow-sm  transition-all duration-300 shadow-md group-hover:ring-2 ring-primary"
+                  // CRITICAL FIX: shrink-0 prevents the image from squishing when space gets tight
+                  className="w-12 h-12 sm:w-16 sm:h-16 rounded-full drop-shadow-sm transition-all duration-300 shadow-md group-hover:ring-2 ring-primary shrink-0"
                 />
 
-                <div className="flex flex-col">
-                  <p className="text-2xl font-bold text-black-200 group-hover:text-primary transition-colors duration-300">
+                <div className="flex flex-col min-w-0">
+                  <p className="text-lg sm:text-2xl font-bold text-black-200 group-hover:text-primary transition-colors duration-300 truncate">
                     {post.author?.name}
                   </p>
-                  <p className="text-sm font-medium text-black-300">
+                  <p className="text-xs sm:text-sm font-medium text-black-300 truncate">
                     @{post.author?.username}
                   </p>
                 </div>
               </Link>
 
-              <p className="category-tag">{post?.category}</p>
+              {/* CRITICAL FIX: shrink-0 ensures the tag always stays its full width */}
+              <p className="category-tag shrink-0">{post?.category}</p>
             </div>
 
             <hr className="divider" />
@@ -88,7 +92,7 @@ const page = async ({ params }: { params: { id: string } }) => {
 
               {parsedContent ? (
                 <article
-                  className="prose max-w-6xl font-work-sans break-all prose-headings:text-black-200 prose-p:text-black-300 prose-a:text-primary prose-a:font-semibold prose-a:no-underline hover:prose-a:underline mt-4 bg-gradient-to-br from-primary/5 to-transparent px-10 py-10 rounded-2xl"
+                  className="prose max-w-6xl font-work-sans break-words prose-headings:text-black-200 prose-p:text-black-300 prose-a:text-primary prose-a:font-semibold prose-a:no-underline hover:prose-a:underline mt-4 bg-gradient-to-br from-primary/5 to-transparent px-5 py-6 sm:px-10 sm:py-10 rounded-2xl"
                   dangerouslySetInnerHTML={{ __html: parsedContent }}
                 />
               ) : (
